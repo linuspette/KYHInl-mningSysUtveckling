@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using ClassLibrary.Models.Response.Devices;
+using Device.IntelliFan.Services;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
@@ -20,6 +21,7 @@ namespace Device.IntelliFan
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly IDeviceService _deviceService;
         private bool _isRunnning = false;
         private bool _isConnected = false;
         private string _connectionState = "Connecting . . .";
@@ -42,8 +44,9 @@ namespace Device.IntelliFan
         };
 
         //Constructor
-        public MainWindow()
+        public MainWindow(IDeviceService deviceService)
         {
+            _deviceService = deviceService;
             InitializeComponent();
             Initialize();
         }
@@ -56,34 +59,13 @@ namespace Device.IntelliFan
             {
                 while (!_isConnected)
                 {
-                    using var httpClient = new HttpClient();
-
-                    var result = await httpClient.PostAsJsonAsync("https://sysdevfunctions.azurewebsites.net/api/devices", new AddDeviceRequest
-                    {
-                        DeviceId = _device.DeviceId,
-                        DeviceType = _device.DeviceType,
-                        Location = _device.Location,
-                        Owner = _device.Owner,
-                    });
-
-                    if (result.IsSuccessStatusCode || result.StatusCode == HttpStatusCode.Conflict)
-                    {
-                        var data = JsonConvert.DeserializeObject<AddDeviceResponse>(await result.Content.ReadAsStringAsync());
-                        _deviceClient = DeviceClient.CreateFromConnectionString(data.DeviceConnectionString);
-
-                        var twin = await _deviceClient.GetTwinAsync();
-                        if (twin != null)
+                   return await _deviceService.InitializeDeviceConnection(new AddDeviceRequest
                         {
-                            TwinCollection reported = new TwinCollection();
-                            reported["owner"] = _device.Owner;
-                            reported["deviceType"] = _device.DeviceType;
-                            reported["location"] = _device.Location;
-
-                            await _deviceClient.UpdateReportedPropertiesAsync(reported);
-
-                            return true;
-                        }
-                    }
+                            DeviceId = _device.DeviceId,
+                            DeviceType = _device.DeviceType,
+                            Location = _device.Location,
+                            Owner = _device.Owner,
+                        }, _deviceClient);
                 }
                 return false;
             }).Result;
