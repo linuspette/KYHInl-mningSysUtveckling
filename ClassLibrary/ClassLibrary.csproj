@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Input\Roles\" />
+    <Folder Include="Models\Input\Users\" />
     <Folder Include="Models\Response\Devices\" />
     <Folder Include="Models\View\Device\" />
+    <Folder Include="Models\View\Roles\" />
+    <Folder Include="Models\View\User\" />
   </ItemGroup>
 
   <ItemGroup>
