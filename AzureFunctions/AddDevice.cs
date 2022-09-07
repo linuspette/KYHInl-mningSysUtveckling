@@ -34,17 +34,34 @@ namespace AzureFunctions
                     return new ConflictObjectResult(new AddDeviceResponse
                     {
                         Message = "Device already exists.",
-                        IotHub = Environment.GetEnvironmentVariable("IotHubName"),
+                        IotHubName = Environment.GetEnvironmentVariable("IotHubName"),
                         Device = device,
                         DeviceTwin = await _registryManager.GetTwinAsync(device.Id)
                     });
 
+                device = await _registryManager.AddDeviceAsync(new Device(data.DeviceId));
+                var twin = await _registryManager.GetTwinAsync(device.Id);
+
+                twin.Properties.Desired["sendInterval"] = 10000;
+                await _registryManager.UpdateTwinAsync(twin.DeviceId, twin, twin.ETag);
+
+                return new OkObjectResult(new AddDeviceResponse
+                {
+                    Message = "Device created successfully",
+                    IotHubName = Environment.GetEnvironmentVariable("IotHubName"),
+                    Device = device,
+                    DeviceTwin = await _registryManager.GetTwinAsync(device.Id)
+                });
+
             }
             catch (Exception e)
             {
+                return new BadRequestObjectResult(new
+                {
+                    Error = "Unable to add new device",
+                    Exception = e.Message
+                });
             }
-
-            return new BadRequestResult();
         }
     }
 }

@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunctions", "AzureFunc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{4E21E0BF-492E-4232-B59E-6680A127CFAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Device.IntelliWeather", "Device.IntelliWeather\Device.IntelliWeather.csproj", "{22313211-2352-46F3-BE13-788B24EDF275}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Device.IntelliFan", "Device.IntelliFan\Device.IntelliFan.csproj", "{0BE0E0EA-FD16-45C9-BAC8-A48482782A61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{4E21E0BF-492E-4232-B59E-6680A127CFAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E21E0BF-492E-4232-B59E-6680A127CFAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E21E0BF-492E-4232-B59E-6680A127CFAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22313211-2352-46F3-BE13-788B24EDF275}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22313211-2352-46F3-BE13-788B24EDF275}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22313211-2352-46F3-BE13-788B24EDF275}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22313211-2352-46F3-BE13-788B24EDF275}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BE0E0EA-FD16-45C9-BAC8-A48482782A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BE0E0EA-FD16-45C9-BAC8-A48482782A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BE0E0EA-FD16-45C9-BAC8-A48482782A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BE0E0EA-FD16-45C9-BAC8-A48482782A61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

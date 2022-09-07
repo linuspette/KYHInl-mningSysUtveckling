@@ -1,0 +1,59 @@
+﻿<Window x:Class="Device.IntelliFan.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Device.IntelliFan"
+        mc:Ignorable="d"
+        Title="IntelliFan" Height="340" Width="300">
+
+    <Window.Resources>
+        <BeginStoryboard x:Key="iconRotateFanBladesStoryboard">
+            <Storyboard RepeatBehavior="Forever">
+                <DoubleAnimation Storyboard.TargetName="iconFanBlades" 
+                                 Storyboard.TargetProperty="Angle"
+                                 From="0" To="360"/>
+            </Storyboard>
+        </BeginStoryboard>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid>
+                <TextBlock FontFamily="{StaticResource FontAwesome-Solid}" 
+                           HorizontalAlignment="Center"
+                           Text="&#xf863;" 
+                           VerticalAlignment="Top"
+                           FontSize="110"
+                           RenderTransformOrigin="0.5 0.5"
+                           Foreground="#FF044E4E">
+                    <TextBlock.RenderTransform>
+                        <RotateTransform x:Name="iconFanBlades" 
+                                         Angle="0"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+            </Grid>
+
+            <TextBlock Text="IntelliFan" 
+                       FontSize="22" 
+                       FontWeight="SemiBold" 
+                       Foreground="#FF044E4E"
+                       HorizontalAlignment="Center"
+                       Margin="0 10 0 5"/>
+
+            <TextBlock Text="Connecting . . ."
+                       x:Name="textBlockConnectionState"
+                       FontSize="11"
+                       FontWeight="SemiBold"
+                       Foreground="#FF044E4E"
+                       HorizontalAlignment="Center"
+                       Margin="0 0 0 10"/>
+
+            <Button x:Name="btnAction"
+                    Style="{StaticResource btn}"
+                    Content="Start"
+                    Click="BtnAction_Click"
+            />
+        </StackPanel>
+    </Grid>
+</Window>

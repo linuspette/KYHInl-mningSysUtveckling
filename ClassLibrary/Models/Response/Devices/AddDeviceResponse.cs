@@ -5,8 +5,9 @@ namespace ClassLibrary.Models.Response.Devices;
 
 public class AddDeviceResponse
 {
-    public string Message { get; set; } = null!;
-    public string IotHub { get; set; } = null!;
+    public string? Message { get; set; }
+    public string? IotHubName { get; set; }
+    public string DeviceConnectionString => $"Hostname={IotHubName};DeviceId={Device.Id};SharedAccessKey={Device.Authentication.SymmetricKey.PrimaryKey}";
     public Device Device { get; set; } = null!;
     public Twin DeviceTwin { get; set; } = null!;
 }
