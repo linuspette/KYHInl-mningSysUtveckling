@@ -1,5 +1,5 @@
-﻿using ClassLibrary.Models.Input.Roles;
-using ClassLibrary.Models.Input.Users;
+﻿using Shared.Models.Input.Roles;
+using Shared.Models.Input.Users;
 using WebApi.Repositories;
 
 namespace WebApi.Helpers;

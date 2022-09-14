@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using ClassLibrary.Models.Input.Roles;
-using ClassLibrary.Models.Input.Users;
-using ClassLibrary.Models.View.Roles;
-using ClassLibrary.Models.View.Tokens;
-using ClassLibrary.Models.View.User;
+using Shared.Models.Input.Roles;
+using Shared.Models.Input.Users;
+using Shared.Models.View.Roles;
+using Shared.Models.View.Tokens;
+using Shared.Models.View.User;
 using WebApi.Models.DataEntities;
 
 namespace WebApi.Helpers;

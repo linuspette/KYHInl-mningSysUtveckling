@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ClassLibrary.Models.View.Tokens;
+using Shared.Models.View.Tokens;
 using WebApi.Helpers;
 using WebApi.Models.DataEntities;
 
@@ -69,7 +69,6 @@ public class JwtTokenRepository : EntityFrameworkRepository<JwtTokenEntity>, ITo
             await UpdateTokenAsync(jwtToken.Id, jwtToken);
         }
     }
-
     public async Task DeleteInactiveTokens()
     {
         var tokens = await GetAllTokensAsync();
@@ -81,11 +80,11 @@ public class JwtTokenRepository : EntityFrameworkRepository<JwtTokenEntity>, ITo
             }
         }
     }
-
     public async Task<List<JwtToken>> GetAllTokensAsync()
     {
         return _mapper.Map<List<JwtToken>>(await ReadRecordsAsync()) ?? null!;
     }
+
     //Private methods
     private async Task<ITokenHandler.StatusCode> AddTokenToDatabaseAsync(string token)
     {

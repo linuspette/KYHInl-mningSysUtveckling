@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Image x:Key="Close" 
+           Source="pack://application:,,,/WpfShared;component/Images/close.png"/>
+
+    <Image x:Key="Minimize" 
+           Source="pack://application:,,,/WpfShared;component/Images/minus.png"
+           Margin="2 2 2 0"
+           />
+    <Image x:Key="Restore" 
+           Source="pack://application:,,,/WpfShared;component/Images/restore.png"
+           Margin="2"/>
+    <Image x:Key="Maximize" 
+           Source="pack://application:,,,/WpfShared;component/Images/resize.png"
+           Margin="2"/>
+</ResourceDictionary>

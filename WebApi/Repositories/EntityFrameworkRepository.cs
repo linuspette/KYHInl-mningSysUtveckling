@@ -32,7 +32,6 @@ public abstract class EntityFrameworkRepository<T> where T : class
         catch { }
         return null!;
     }
-
     protected virtual async Task<T> ReadRecordAsync(Expression<Func<T, bool>> predicate)
     {
         try
@@ -42,7 +41,6 @@ public abstract class EntityFrameworkRepository<T> where T : class
         catch { }
         return null!;
     }
-
     protected virtual async Task<IEnumerable<T>> ReadRecordsAsync(int take = 0)
     {
         try
@@ -55,7 +53,6 @@ public abstract class EntityFrameworkRepository<T> where T : class
         catch { }
         return null!;
     }
-
     protected virtual async Task<T> UpdateRecordAsync(Expression<Func<T, bool>> predicate, T record)
     {
         try
@@ -74,7 +71,6 @@ public abstract class EntityFrameworkRepository<T> where T : class
         catch { }
         return null!;
     }
-
     protected virtual async Task<bool> DeleteRecordAsync(Expression<Func<T, bool>> predicate)
     {
         try

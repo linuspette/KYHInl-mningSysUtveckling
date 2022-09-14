@@ -2,35 +2,13 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Device.IntelliFan"
-             Startup="OnStartUp">
+             StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <FontFamily x:Key="FontAwesome-Regular">/Fonts/fa-regular-400.ttf#Font Awesome 6 Free Regular</FontFamily>
-        <FontFamily x:Key="FontAwesome-Solid">/Fonts/fa-solid-900.ttf#Font Awesome 6 Free Solid</FontFamily>
-
-        <Style x:Key="btn" TargetType="Button">
-            <Setter Property="Background" Value="#FF044E4E"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="0 30 0 10"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                Padding="{TemplateBinding Padding}"
-                                CornerRadius="10">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="DarkSlateGray"></Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/WpfShared;component/Resources/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/WpfShared;component/Resources/Buttons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

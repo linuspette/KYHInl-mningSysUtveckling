@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using ClassLibrary.Models.Input.Roles;
-using ClassLibrary.Models.View.Roles;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Models.Input.Roles;
+using Shared.Models.View.Roles;
 using WebApi.Helpers;
 using WebApi.Models.DataEntities;
 
@@ -31,14 +31,12 @@ public class RoleRepository : EntityFrameworkRepository<RoleEntity>, IRoleManage
 
         return roles ?? null!;
     }
-
     public async Task<bool> CheckIfRoleExistsAsync(string role)
     {
         if (await ReadRecordAsync(x => x.Name == role) == null)
             return false;
         return true;
     }
-
     public async Task<IActionResult> CreateRoleAsync(CreateRole role)
     {
         try

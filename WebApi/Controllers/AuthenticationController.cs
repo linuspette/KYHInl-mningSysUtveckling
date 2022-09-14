@@ -1,5 +1,5 @@
-﻿using ClassLibrary.Models.Input.Users;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Shared.Models.Input.Users;
 using WebApi.Repositories;
 
 namespace WebApi.Controllers

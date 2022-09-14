@@ -22,6 +22,6 @@
     <Folder Include="Models\DataEntities\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 </Project>

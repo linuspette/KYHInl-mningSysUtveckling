@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using ClassLibrary.Models.Input.Users;
-using ClassLibrary.Models.View.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Shared.Models.Input.Users;
+using Shared.Models.View.User;
 using WebApi.Helpers;
 using WebApi.Models.DataEntities;
 

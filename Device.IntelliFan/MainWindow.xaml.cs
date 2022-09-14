@@ -1,18 +1,7 @@
-﻿using ClassLibrary.Models.Input.Devices;
-using ClassLibrary.Models.View.Device;
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
-using ClassLibrary.Models.Response.Devices;
-using Device.IntelliFan.Services;
-using Microsoft.Azure.Devices.Client;
-using Microsoft.Azure.Devices.Shared;
-using Newtonsoft.Json;
+using WpfShared.Helpers;
 
 namespace Device.IntelliFan
 {
@@ -21,77 +10,77 @@ namespace Device.IntelliFan
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IDeviceService _deviceService;
-        private bool _isRunnning = false;
-        private bool _isConnected = false;
-        private string _connectionState = "Connecting . . .";
-
-        private DeviceClient _deviceClient;
-        //UI Timer that checks every 5 seconds if application is connected to Iot-Hub
-        private DispatcherTimer _timer = new DispatcherTimer
+        public MainWindow()
         {
-            Interval = new TimeSpan(0, 0, 0, 5),
-            IsEnabled = false,
-            Tag = null
-        };
-        //Hard-coded device data
-        private readonly DeviceData _device = new DeviceData
-        {
-            DeviceId = "IntelliFan-9071uy",
-            DeviceType = "SmartFan",
-            Location = "Living Room",
-            Owner = "Linus Pettersson"
-        };
-
-        //Constructor
-        public MainWindow(IDeviceService deviceService)
-        {
-            _deviceService = deviceService;
             InitializeComponent();
-            Initialize();
+            UpdateConnectionState().ConfigureAwait(false);
+
+            DeviceManager.Initialize("intellifan-l1001", "Fan", "Linus");
+            DeviceManager.ConnectAsync().ConfigureAwait(false);
         }
 
-        private void Initialize()
+        private static bool isRunning = false;
+
+        private async Task UpdateConnectionState()
         {
-            _timer.Tick += new EventHandler(CheckConnectionStatus);
-            _timer.Start();
-            _isConnected = Task.Run(async () =>
+            while (true)
             {
-                while (!_isConnected)
+                tblockConnectionState.Text = DeviceManager.ConnectionStateMessage;
+
+                if (DeviceManager.ConnectionStateMessage == "Connected")
                 {
-                   return await _deviceService.InitializeDeviceConnection(new AddDeviceRequest
-                        {
-                            DeviceId = _device.DeviceId,
-                            DeviceType = _device.DeviceType,
-                            Location = _device.Location,
-                            Owner = _device.Owner,
-                        }, _deviceClient);
+                    btnToggle.Visibility = Visibility.Visible;
+                    UpdateButtonContent();
                 }
-                return false;
-            }).Result;
-        }
-        private void CheckConnectionStatus(object sender, EventArgs e)
-        {
-            if (!_isConnected)
-                textBlockConnectionState.Text = "Not connected";
-            else
-                textBlockConnectionState.Text = "Connected";
-        }
-        private void BtnAction_Click(object sender, RoutedEventArgs e)
-        {
-            var iconRotateFanBladesStoryboard = (BeginStoryboard)TryFindResource("iconRotateFanBladesStoryboard");
 
-            if (_isRunnning)
+                if (DeviceManager.ConnectionStateMessage == "Not connected")
+                {
+                    btnToggle.Visibility = Visibility.Visible;
+                    btnToggle.Content = "Connect";
+                }
+
+                if (!DeviceManager.isConnected)
+                {
+                    btnToggle.Visibility = Visibility.Visible;
+                    btnToggle.Content = "Initializing. . .";
+                }
+
+                await Task.Delay(5000);
+            }
+        }
+
+        private async void btnToggle_Click(object sender, RoutedEventArgs e)
+        {
+            if (DeviceManager.ConnectionStateMessage == "Not Connected")
+                await DeviceManager.ConnectAsync();
+
+            if (DeviceManager.ConnectionStateMessage == "Connected")
             {
-                _isRunnning = false;
-                iconRotateFanBladesStoryboard.Storyboard.Stop();
-                btnAction.Content = "Start";
+                var sB = (BeginStoryboard)TryFindResource("sbRotate");
+                if (!isRunning)
+                {
+                    isRunning = true;
+                    sB.Storyboard.Begin();
+                    UpdateButtonContent();
+                }
+                else
+                {
+                    isRunning = false;
+                    sB.Storyboard.Stop();
+                    UpdateButtonContent();
+                }
+            }
+        }
+
+        private void UpdateButtonContent()
+        {
+            if (!isRunning)
+            {
+                btnToggle.Content = "Start Fan";
             }
             else
             {
-                _isRunnning = true;
-                iconRotateFanBladesStoryboard.Storyboard.Begin();
-                btnAction.Content = "Stop";
+                btnToggle.Content = "Stop Fan";
             }
         }
     }
