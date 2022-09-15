@@ -63,8 +63,9 @@ public class UserRepository : EntityFrameworkRepository<UserEntity>, IUserManage
             var userEntity = _mapper.Map<UserEntity>(user);
             userEntity.CreatePassword(user.Password);
 
-            await CreateRecordAsync(userEntity);
-            return new OkObjectResult("User was created successfully");
+            var result = await CreateRecordAsync(userEntity);
+            if(result != null)
+                return new OkObjectResult("User was created successfully");
         }
         catch { }
 

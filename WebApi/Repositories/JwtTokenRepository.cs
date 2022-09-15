@@ -12,7 +12,8 @@ public interface ITokenHandler
         Success,
         Failed,
         Valid,
-        Expired
+        Expired,
+        NotAuthorized
     }
     public Task<string> GenerateTokenAsync(UserEntity user);
     public Task<ITokenHandler.StatusCode> ValidateTokenAsync(string value);
@@ -46,11 +47,22 @@ public class JwtTokenRepository : EntityFrameworkRepository<JwtTokenEntity>, ITo
     }
     public async Task<ITokenHandler.StatusCode> ValidateTokenAsync(string value)
     {
-        var token = await ReadRecordAsync(x => x.Token == value);
-        if (DateTime.Now < token.Expires && token.IsActive)
-            return ITokenHandler.StatusCode.Valid;
 
+        try
+        {
+            var token = await ReadRecordAsync(x => x.Token == value);
+            if (token != null)
+            {
+                if (DateTime.Now < token.Expires && token.IsActive)
+                    return ITokenHandler.StatusCode.Valid;
+                else
         return ITokenHandler.StatusCode.Expired;
+                    
+            }
+        }
+        catch { }
+
+        return ITokenHandler.StatusCode.NotAuthorized;
     }
     public async Task<JwtToken> UpdateTokenAsync(Guid id, JwtToken token)
     {
