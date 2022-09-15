@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Models.Input.Users;
 using Shared.Models.View.User;
 using WebApi.Helpers;
-using WebApi.Models.DataEntities;
+using WebApi.Models.DataEntities.Authentication;
 
 namespace WebApi.Repositories;
 
@@ -37,11 +37,9 @@ public class UserRepository : EntityFrameworkRepository<UserEntity>, IUserManage
         {
             if (take != 0)
                 return await _context.Users
-                    .Include(x => x.Roles)
                     .Take(take).ToListAsync() ?? null!;
 
             return await _context.Users
-                .Include(x => x.Roles)
                 .ToListAsync() ?? null!;
         }
         catch { }

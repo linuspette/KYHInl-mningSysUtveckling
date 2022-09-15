@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Helpers;
 
@@ -11,9 +12,10 @@ using WebApi.Helpers;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220915075051_deleted_roles_added_iotdevices")]
+    partial class deleted_roles_added_iotdevices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,7 +115,7 @@ namespace WebApi.Migrations
 
                     b.HasIndex("UserEntityId");
 
-                    b.ToTable("IotDevices");
+                    b.ToTable("IotDeviceEntity");
                 });
 
             modelBuilder.Entity("WebApi.Models.DataEntities.Devices.IotDeviceEntity", b =>

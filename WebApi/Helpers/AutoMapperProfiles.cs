@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Shared.Models.Input.Roles;
 using Shared.Models.Input.Users;
+using Shared.Models.View.Device;
 using Shared.Models.View.Roles;
 using Shared.Models.View.Tokens;
 using Shared.Models.View.User;
-using WebApi.Models.DataEntities;
+using WebApi.Models.DataEntities.Authentication;
+using WebApi.Models.DataEntities.Devices;
 
 namespace WebApi.Helpers;
 
@@ -19,9 +21,8 @@ public class AutoMapperProfiles : Profile
         CreateMap<SignIn, AccountTokenHandler>();
         CreateMap<AddUser, UserEntity>();
 
-        //Role profiles
-        CreateMap<RoleEntity, Role>().ReverseMap();
-        CreateMap<CreateRole, RoleEntity>();
+        //Iotdevice profiles
+        CreateMap<IotDeviceEntity, IotDevice>().ReverseMap();
 
         //Token Profiles
         CreateMap<JwtTokenEntity, JwtToken>().ReverseMap();

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Shared.Models.View.Tokens;
 using WebApi.Helpers;
-using WebApi.Models.DataEntities;
+using WebApi.Models.DataEntities.Authentication;
 
 namespace WebApi.Repositories;
 

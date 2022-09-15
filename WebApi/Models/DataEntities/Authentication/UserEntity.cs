@@ -3,8 +3,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
+using WebApi.Models.DataEntities.Devices;
 
-namespace WebApi.Models.DataEntities;
+namespace WebApi.Models.DataEntities.Authentication;
 
 [Index(nameof(Username), IsUnique = true)]
 public class UserEntity
@@ -24,14 +25,13 @@ public class UserEntity
     [Required]
     public bool IsActive { get; set; } = true;
     [Required]
-    public List<RoleEntity> Roles { get; set; } = null!;
-
-    [Required]
     public DateTime DateCreated { get; set; } = DateTime.UtcNow;
     [Required]
     public DateTime DateModified { get; set; } = DateTime.UtcNow;
     [Required]
     public DateTime LastTimePasswordChanged { get; set; } = DateTime.UtcNow;
+
+    [Required] public List<IotDeviceEntity> IotDevices { get; set; } = null!;
 
 
     /// <summary>

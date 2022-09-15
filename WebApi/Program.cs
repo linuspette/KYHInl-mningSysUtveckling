@@ -17,7 +17,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserManager, UserRepository>();
-builder.Services.AddScoped<IRoleManager, RoleRepository>();
 builder.Services.AddScoped<ITokenHandler, JwtTokenRepository>();
 
 builder.Services.AddScoped<OnStartUp>();

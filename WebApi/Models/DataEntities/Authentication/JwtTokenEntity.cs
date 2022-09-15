@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApi.Models.DataEntities;
+namespace WebApi.Models.DataEntities.Authentication;
 
 public class JwtTokenEntity
 {

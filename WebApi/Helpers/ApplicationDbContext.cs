@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApi.Models.DataEntities;
+using WebApi.Models.DataEntities.Authentication;
+using WebApi.Models.DataEntities.Devices;
 
 namespace WebApi.Helpers;
 
@@ -10,6 +11,6 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<UserEntity> Users { get; set; } = null!;
-    public DbSet<RoleEntity> Roles { get; set; } = null!;
     public DbSet<JwtTokenEntity> Tokens { get; set; } = null!;
+    public DbSet<IotDeviceEntity> IotDevices { get; set; }
 }
