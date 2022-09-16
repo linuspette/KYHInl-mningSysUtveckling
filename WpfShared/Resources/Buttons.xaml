@@ -4,7 +4,7 @@
         <Setter Property="Background" Value="#FF044E4E"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="Padding" Value="10"/>
-        <Setter Property="Margin" Value="0 30 0 10"/>
+        <Setter Property="Margin" Value="0 10 0 0"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">

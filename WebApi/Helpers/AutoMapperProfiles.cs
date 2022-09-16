@@ -19,7 +19,7 @@ public class AutoMapperProfiles : Profile
         CreateMap<UserEntity, AccountTokenHandler>();
 
         CreateMap<SignIn, AccountTokenHandler>();
-        CreateMap<AddUser, UserEntity>();
+        CreateMap<SignUp, UserEntity>();
 
         //Iotdevice profiles
         CreateMap<IotDeviceEntity, IotDevice>().ReverseMap();

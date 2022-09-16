@@ -6,6 +6,7 @@ using Shared.Models.Response.Devices;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace WpfShared.Helpers;
 
@@ -22,6 +23,7 @@ public static class DeviceManager
 
     private static DeviceClient? deviceClient;
     private static string baseUrl = "https://sysdevfunctions.azurewebsites.net/api/devices/connect";
+    private static string AzureFunctionsAccessToken = string.Empty;
 
     public static bool isConnected { get; private set; } = false;
     public static string ConnectionStateMessage { get; private set; } = null!;
@@ -29,11 +31,12 @@ public static class DeviceManager
     public static string Owner { get; private set; } = null!;
     public static string DeviceType { get; private set; } = null!;
 
-    public static void Initialize(string deviceId, string deviceType, string owner)
+    public static void Initialize(string deviceId, string deviceType, string owner, string azureFunctionsAccessToken)
     {
         DeviceId = deviceId;
         DeviceType = deviceType;
         Owner = owner;
+        AzureFunctionsAccessToken = azureFunctionsAccessToken;
     }
 
     public static void SetConnectionState(ConnectionState state)
@@ -94,7 +97,7 @@ public static class DeviceManager
                                     await deviceClient.UpdateReportedPropertiesAsync(twinCollection);
                                     var twin = deviceClient.GetTwinAsync();
 
-                                    var result = await _httpClient.GetAsync($"{baseUrl}?code=HZizwjJQs32h_FEFOlrmCa0UrGWwC4_MejXmp56-4iaqAzFuqRp0sw==&deviceId={DeviceId}");
+                                    var result = await _httpClient.GetAsync($"{baseUrl}{AzureFunctionsAccessToken}{DeviceId}");
                                     if (result.IsSuccessStatusCode)
                                     {
                                         var connectionState = await result.Content.ReadAsStringAsync();

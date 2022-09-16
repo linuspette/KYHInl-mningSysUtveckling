@@ -10,7 +10,7 @@ namespace WebApi.Repositories;
 
 public interface IUserManager
 {
-    public Task<IActionResult> AddUserAsync(AddUser user);
+    public Task<IActionResult> AddUserAsync(SignUp user);
     public Task<IActionResult> SignInAsync(SignIn user);
     public Task<User?> GetUserByUsernameAsync(string username);
     public Task<IActionResult> GetAllUsersAsync(int take = 0);
@@ -53,7 +53,7 @@ public class UserRepository : EntityFrameworkRepository<UserEntity>, IUserManage
         var user = _mapper.Map<User>(await ReadRecordAsync(x => x.Username == username));
         return user ?? null;
     }
-    public async Task<IActionResult> AddUserAsync(AddUser user)
+    public async Task<IActionResult> AddUserAsync(SignUp user)
     {
         try
         {

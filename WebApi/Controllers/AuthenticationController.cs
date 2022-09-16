@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         }
         [HttpPost]
         [Route("signup")]
-        public async Task<IActionResult> SignUp(AddUser model)
+        public async Task<IActionResult> SignUp(SignUp model)
         {
             if (!ModelState.IsValid)
                 return new BadRequestObjectResult("All required fields must be supplied and valid");

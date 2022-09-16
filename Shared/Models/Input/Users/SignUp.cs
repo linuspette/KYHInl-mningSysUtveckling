@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Models.Input.Users;
 
-public class AddUser
+public class SignUp
 {
     [Required, RegularExpression(@"^[a-zA-Z][a-zA-Z0-9]{3,20}$")]
     public string Username { get; set; } = null!;

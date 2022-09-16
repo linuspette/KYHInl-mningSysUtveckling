@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
+using Microsoft.Extensions.Configuration;
 using WpfShared.Helpers;
 
 namespace Device.IntelliFan
@@ -10,12 +11,15 @@ namespace Device.IntelliFan
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly IConfiguration _configuration;
+
+        public MainWindow(IConfiguration configuration)
         {
+            _configuration = configuration;
             InitializeComponent();
             UpdateConnectionState().ConfigureAwait(false);
 
-            DeviceManager.Initialize("intellifan-l1001", "Fan", "Linus");
+            DeviceManager.Initialize("intellifan-l1001", "Fan", "Linus", _configuration["SysDevAzureFunctionsKey"]);
             DeviceManager.ConnectAsync().ConfigureAwait(false);
         }
 
