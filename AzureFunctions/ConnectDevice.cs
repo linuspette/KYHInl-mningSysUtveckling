@@ -20,7 +20,7 @@ namespace AzureFunctions
 
         [FunctionName("ConnectDevice")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "devices/connect")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "devices/connect")] HttpRequest req,
             ILogger log)
         {
 

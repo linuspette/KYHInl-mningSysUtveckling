@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfShared", "WPFShared\WpfS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Device.IntelliTemp", "Device.IntelliTemp\Device.IntelliTemp.csproj", "{BFC2C340-77C3-4DB0-8E2F-0EA38FCB536D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Administration", "Client.Administration\Client.Administration.csproj", "{66AF5852-94C2-455C-9949-B440082E4847}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Administration", "Client.Administration\Client.Administration.csproj", "{66AF5852-94C2-455C-9949-B440082E4847}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

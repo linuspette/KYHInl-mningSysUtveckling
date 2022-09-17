@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Shared.Models.Input.Devices;
 using Shared.Models.Input.Roles;
 using Shared.Models.Input.Users;
 using Shared.Models.View.Device;
@@ -23,6 +24,7 @@ public class AutoMapperProfiles : Profile
 
         //Iotdevice profiles
         CreateMap<IotDeviceEntity, IotDevice>().ReverseMap();
+        CreateMap<AddDeviceRequest, IotDeviceEntity>();
 
         //Token Profiles
         CreateMap<JwtTokenEntity, JwtToken>().ReverseMap();
