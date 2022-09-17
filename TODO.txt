@@ -1,0 +1,42 @@
+//Azure Functions//
+
+	Migrera över helt till web api?
+
+//Devices//
+	Migrera över helt till web api?
+	
+		//IntelliFan//
+			Koppla ihop med IntelliTemp så att man kan auto-styra fläkten med hjälp av temperatur-data
+			Datan från IntelliTemp ska kunna i både Fahrenheit, samt Celsius. Intellifan ska kunna få denna data och själv kunna konvertera temperaturen om behov finns.
+			Designa om GUIn så att den blir mer egen.
+
+		//IntelliTemp//
+			Skriva en random-algorithm för att generera trovärdiga temperaturer.
+			Ska kunna köras med Celsius och Fahrenheit.
+			Göra klart back-enden
+			Göra klart GUIn
+			Ska kunna köras utan att Admin-clienten är öppen och skicka data.
+	
+				//Roliga extrasaker att implementera
+					Eventuellt spara temperatur-data i db för att kunna föra statistik?
+
+//Client//
+
+	//Administration//
+		Snygga till GUIn
+		Koppla ihop backenden med web apiet
+		Göra det möjligt att be om nytt lösenord
+
+
+//APIer//
+
+	//AzureFunctions//
+		Möjligtvis att plocka bort denna och flytta funktionerna till webapi istället?
+
+	//WebApi//
+		Utöka devicescontroller så att den tar övet funktioner som idag sköts utav azure functions?
+	
+			//Roliga extrasaker att implementera
+				Skapa möjlighet att be om nytt lösenord
+				UserEntity måste innehålla en unik email
+				Lägga till SendGrid för att kunna auto-skicka mail med random-genererad länk för lösenordsåterställning
