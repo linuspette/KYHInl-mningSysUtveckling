@@ -7,7 +7,7 @@
 	
 		//IntelliFan//
 			Koppla ihop med IntelliTemp så att man kan auto-styra fläkten med hjälp av temperatur-data
-			Datan från IntelliTemp ska kunna i både Fahrenheit, samt Celsius. Intellifan ska kunna få denna data och själv kunna konvertera temperaturen om behov finns.
+			Datan från IntelliTemp ska finnas i både Fahrenheit, samt Celsius. Intellifan ska kunna få denna data och själv kunna konvertera temperaturen om behov finns.
 			Designa om GUIn så att den blir mer egen.
 
 		//IntelliTemp//

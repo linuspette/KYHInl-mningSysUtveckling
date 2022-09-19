@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Models.Input.Devices;
@@ -8,6 +9,7 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DevicesController : ControllerBase
     {
         private readonly IIotDeviceManager _iotDeviceManager;
@@ -19,11 +21,14 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [Route("getuserdevices")]
-        public async Task<IActionResult> GetUserIotDevices(Guid id, int take = 0)
+        public async Task<IActionResult> GetUserIotDevices(int take = 0)
         {
             try
             {
-                return new OkObjectResult(await _iotDeviceManager.GetUserDevicesAsync(id, take));
+                var id = User.Claims?.FirstOrDefault(x => x.Type == "id")?.ToString() ?? null!;
+
+                if(!string.IsNullOrEmpty(id))
+                    return new OkObjectResult(await _iotDeviceManager.GetUserDevicesAsync(Guid.Parse(id), take));
             }
             catch { }
 

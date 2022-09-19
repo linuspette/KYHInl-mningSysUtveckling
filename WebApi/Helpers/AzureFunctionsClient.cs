@@ -25,7 +25,9 @@ public class AzureFunctionsClient : IAzureFunctionsClient
 
     public async Task<IAzureFunctionsClient.StatusCode> AddIotDevice(AddDeviceRequest model)
     {
-        var response = await _httpClient.PostAsJsonAsync<AddDeviceRequest>("devices/add", model);
+        var auth = _configuration["SysDevAzureFunctionsKey"];
+
+        var response = await _httpClient.PostAsJsonAsync<AddDeviceRequest>($"{_baseAdress}add{auth}", model);
 
         if (response.IsSuccessStatusCode)
             return IAzureFunctionsClient.StatusCode.Succeded;

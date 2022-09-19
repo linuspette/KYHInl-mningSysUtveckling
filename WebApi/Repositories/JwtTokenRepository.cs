@@ -56,7 +56,7 @@ public class JwtTokenRepository : EntityFrameworkRepository<JwtTokenEntity>, ITo
                 if (DateTime.Now < token.Expires && token.IsActive)
                     return ITokenHandler.StatusCode.Valid;
                 else
-        return ITokenHandler.StatusCode.Expired;
+                    return ITokenHandler.StatusCode.Expired;
                     
             }
         }
@@ -108,7 +108,7 @@ public class JwtTokenRepository : EntityFrameworkRepository<JwtTokenEntity>, ITo
 
         try
         {
-            await CreateRecordAsync(tokenEntity);
+            await CreateRecordAsync(tokenEntity, Guid.Empty);
             return ITokenHandler.StatusCode.Success;
         }
         catch { };

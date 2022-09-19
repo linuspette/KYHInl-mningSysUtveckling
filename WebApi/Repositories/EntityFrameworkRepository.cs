@@ -18,7 +18,7 @@ public abstract class EntityFrameworkRepository<T> where T : class
 
     //CRUD - Create Read(Get) Update Delete
 
-    protected virtual async Task<T> CreateRecordAsync(T record)
+    protected virtual async Task<T> CreateRecordAsync(T record, Guid id)
     {
         try
         {

@@ -20,6 +20,7 @@ builder.Services.AddScoped<IUserManager, UserRepository>();
 builder.Services.AddScoped<ITokenHandler, JwtTokenRepository>();
 builder.Services.AddScoped<ITokenReturnStatements, TokenReturnStatements>();
 builder.Services.AddScoped<IAzureFunctionsClient, AzureFunctionsClient>();
+builder.Services.AddScoped<IIotDeviceManager, IotDeviceRepository>();
 
 builder.Services.AddScoped<OnStartUp>();
 

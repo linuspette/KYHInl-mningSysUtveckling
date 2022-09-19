@@ -31,7 +31,6 @@ public class IotDeviceRepository : EntityFrameworkRepository<IotDeviceEntity>, I
     {
         return _mapper.Map<List<IotDevice>>(await ReadRecordsAsync(take)) ?? null!;
     }
-
     public async Task<List<IotDevice>> GetUserDevicesAsync(Guid userId, int take = 0)
     {
         var user = await _context.Users
@@ -51,8 +50,8 @@ public class IotDeviceRepository : EntityFrameworkRepository<IotDeviceEntity>, I
 
             if (await _azureFunctionsClient.AddIotDevice(model) == IAzureFunctionsClient.StatusCode.Failed)
                 return new BadRequestObjectResult("Device creation failed");
-            
-            var result = await CreateRecordAsync(_mapper.Map<IotDeviceEntity>(model));
+
+            var result = await CreateRecordAsync(_mapper.Map<IotDeviceEntity>(model), model.userId);
 
             if (result != null)
                 return new OkObjectResult("Device creation succeded");
@@ -60,5 +59,38 @@ public class IotDeviceRepository : EntityFrameworkRepository<IotDeviceEntity>, I
         catch { }
 
         return new BadRequestObjectResult("Device creation failed");
+    }
+    protected override async Task<IotDeviceEntity> CreateRecordAsync(IotDeviceEntity record, Guid id)
+    {
+        var user = await _context.Users.Include(x => x.IotDevices).FirstOrDefaultAsync(x => x.Id == id);
+        if (user != null)
+        {
+            user.IotDevices.Add(record);
+
+            try
+            {
+                _context.IotDevices.Add(record);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return null!;
+            }
+
+            try
+            {
+                _context.Attach(user).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return null!;
+            }
+
+            return record;
+        }
+
+
+        return null!;
     }
 }

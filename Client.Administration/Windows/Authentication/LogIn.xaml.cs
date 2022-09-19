@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Client.Administration.Helpers;
+using Client.Administration.Windows.Devices;
 using Shared.Models.Input.Users;
 
 namespace Client.Administration.Windows.Authentication
@@ -32,33 +33,6 @@ namespace Client.Administration.Windows.Authentication
             InitializeComponent();
         }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                DragMove();
-            }
-        }
-
-        private void CloseBtnClick(object sender, RoutedEventArgs routedEventArgs)
-        {
-            Close();
-        }
-
-        private void ResizeBtnClick(object sender, RoutedEventArgs e)
-        {
-            if (this.WindowState == WindowState.Normal)
-            {
-                this.WindowState = WindowState.Maximized;
-                btnResize.Content = FindResource("Restore");
-            }
-            else
-            {
-                this.WindowState = WindowState.Normal;
-                btnResize.Content = FindResource("Maximize");
-            }
-        }
-
         private void MinimizeBtnClick(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
@@ -74,7 +48,9 @@ namespace Client.Administration.Windows.Authentication
 
             if (result)
             {
-                MessageBox.Show("Log in succeded", "Success", MessageBoxButton.OK);
+                var mainWindow = new MainWindow(_apiClient, this);
+                Hide();
+                mainWindow.Show();
             }
             else
             {

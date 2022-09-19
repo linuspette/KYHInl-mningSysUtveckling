@@ -6,22 +6,15 @@
         xmlns:local="clr-namespace:Client.Administration.Windows.Authentication"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
-        WindowStyle="None"
         ShowInTaskbar="False"
-        AllowsTransparency="True"
         Background="Transparent"
         Height="450" 
         Width="300">
-    <WindowChrome.WindowChrome>
-        <WindowChrome 
-            CaptionHeight="5"
-            ResizeBorderThickness="5" />
-    </WindowChrome.WindowChrome>
 
     <Grid Style="{StaticResource AppBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition MouseDown="Window_MouseDown" Height="10"/>
-            <RowDefinition MouseDown="Window_MouseDown" Height="20"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
@@ -34,41 +27,6 @@
         </Grid.ColumnDefinitions>
 
         <!--Top bar-->
-
-        <!--Program title-->
-        <DockPanel Grid.Row="1"
-                   Grid.Column="3"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Top">
-            <Button
-                x:Name="ButtonMinimize"
-                DockPanel.Dock="Left"
-                Style="{StaticResource Button-CloseMinimizeResize}"
-                Click="MinimizeBtnClick "
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="{StaticResource Minimize}"
-                />
-            <Button
-                x:Name="btnResize"
-                Style="{StaticResource Button-CloseMinimizeResize}"
-                Click="ResizeBtnClick "
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-            >
-                <DynamicResource ResourceKey="Maximize"/>
-            </Button>
-            <Button
-                x:Name="ButtonClose"
-                DockPanel.Dock="Right"
-                Style="{StaticResource Button-CloseMinimizeResize}"
-                Click="CloseBtnClick "
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="X"
-                    
-            />
-        </DockPanel>
 
         <!--Main body-->
         <StackPanel Grid.Row="2"

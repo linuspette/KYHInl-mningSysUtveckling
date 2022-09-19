@@ -12,5 +12,5 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<UserEntity> Users { get; set; } = null!;
     public DbSet<JwtTokenEntity> Tokens { get; set; } = null!;
-    public DbSet<IotDeviceEntity> IotDevices { get; set; }
+    public DbSet<IotDeviceEntity> IotDevices { get; set; } = null!;
 }

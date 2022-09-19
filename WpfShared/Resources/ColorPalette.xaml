@@ -14,4 +14,10 @@
     <Style x:Key="AppBackground" TargetType="Grid">
         <Setter Property="Background" Value="#373737"></Setter>
     </Style>
+    <Style x:Key="EllipseBackground" TargetType="Ellipse">
+        <Setter Property="Fill" Value="#373737"></Setter>
+    </Style>    
+    <Style x:Key="RectangleBackground" TargetType="Rectangle">
+        <Setter Property="Fill" Value="#373737"></Setter>
+    </Style>
 </ResourceDictionary>
