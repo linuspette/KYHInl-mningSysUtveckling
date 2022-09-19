@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shared.Models.Input.Devices;
 using Shared.Models.View.Device;
+using Shared.Models.View.User;
 using WebApi.Helpers;
 using WebApi.Models.DataEntities.Devices;
 
@@ -11,7 +12,7 @@ namespace WebApi.Repositories;
 public interface IIotDeviceManager
 {
     public Task<List<IotDevice>> GetAllDevicesAsync(int take = 0);
-    public Task<IActionResult> AddIotDeviceAsync(AddDeviceRequest model);
+    public Task<IActionResult> AddIotDeviceAsync(AddDeviceRequest model, Guid id);
     public Task<List<IotDevice>> GetUserDevicesAsync(Guid userId, int take = 0);
 }
 public class IotDeviceRepository : EntityFrameworkRepository<IotDeviceEntity>, IIotDeviceManager
@@ -27,6 +28,7 @@ public class IotDeviceRepository : EntityFrameworkRepository<IotDeviceEntity>, I
         _azureFunctionsClient = azureFunctionsClient;
     }
 
+    //Public methods
     public async Task<List<IotDevice>> GetAllDevicesAsync(int take = 0)
     {
         return _mapper.Map<List<IotDevice>>(await ReadRecordsAsync(take)) ?? null!;
@@ -41,25 +43,32 @@ public class IotDeviceRepository : EntityFrameworkRepository<IotDeviceEntity>, I
 
         return _mapper.Map<List<IotDevice>>(user.IotDevices) ?? null!;
     }
-    public async Task<IActionResult> AddIotDeviceAsync(AddDeviceRequest model)
+    public async Task<IActionResult> AddIotDeviceAsync(AddDeviceRequest model, Guid id)
     {
-        try
+        if (id != Guid.Empty)
         {
-            if (await ReadRecordAsync(x => x.DeviceId == model.DeviceId) != null)
-                return new ConflictObjectResult("Device already exists");
+            try
+            {
+                if (await ReadRecordAsync(x => x.DeviceId == model.DeviceId) != null)
+                    return new ConflictObjectResult("Device already exists");
 
-            if (await _azureFunctionsClient.AddIotDevice(model) == IAzureFunctionsClient.StatusCode.Failed)
-                return new BadRequestObjectResult("Device creation failed");
+                if (await _azureFunctionsClient.AddIotDevice(model) == IAzureFunctionsClient.StatusCode.Failed)
+                    return new BadRequestObjectResult("Device creation failed");
 
-            var result = await CreateRecordAsync(_mapper.Map<IotDeviceEntity>(model), model.userId);
+                var result = await CreateRecordAsync(_mapper.Map<IotDeviceEntity>(model), id);
 
-            if (result != null)
-                return new OkObjectResult("Device creation succeded");
+                if (result != null)
+                    return new OkObjectResult("Device creation succeded");
+            }
+            catch { }
+
+            return new BadRequestObjectResult("Device creation failed");
         }
-        catch { }
 
-        return new BadRequestObjectResult("Device creation failed");
+        return new BadRequestObjectResult("User id must be supplied");
     }
+
+    //Private/protected methods
     protected override async Task<IotDeviceEntity> CreateRecordAsync(IotDeviceEntity record, Guid id)
     {
         var user = await _context.Users.Include(x => x.IotDevices).FirstOrDefaultAsync(x => x.Id == id);

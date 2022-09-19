@@ -25,7 +25,9 @@
 	//Administration//
 		Snygga till GUIn
 		Koppla ihop backenden med web apiet
-		Göra det möjligt att be om nytt lösenord
+		
+		//För skojs skull om tiden finns
+			Göra det möjligt att be om nytt lösenord
 
 
 //APIer//

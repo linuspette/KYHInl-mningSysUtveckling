@@ -25,9 +25,9 @@ namespace WebApi.Controllers
         {
             try
             {
-                var id = User.Claims?.FirstOrDefault(x => x.Type == "id")?.ToString() ?? null!;
+                var id = User.Claims?.FirstOrDefault(x => x.Type == "id")?.Value ?? null!;
 
-                if(!string.IsNullOrEmpty(id))
+                if (!string.IsNullOrEmpty(id))
                     return new OkObjectResult(await _iotDeviceManager.GetUserDevicesAsync(Guid.Parse(id), take));
             }
             catch { }
@@ -39,8 +39,15 @@ namespace WebApi.Controllers
         [Route("createdevice")]
         public async Task<IActionResult> CreateIotDeviceAsync(AddDeviceRequest model)
         {
-            var response = await _iotDeviceManager.AddIotDeviceAsync(model);
-            return response;
+            try
+            {
+                var id = User.Claims?.FirstOrDefault(x => x.Type == "id")?.Value ?? null!;
+                var response = await _iotDeviceManager.AddIotDeviceAsync(model,Guid.Parse(id));
+                return response;
+            }
+            catch { }
+
+            return new BadRequestObjectResult("Something went wrong, please try again later");
         }
     }
 }

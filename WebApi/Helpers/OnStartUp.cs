@@ -17,7 +17,7 @@ public class OnStartUp
 
     public async Task InitializeAsync()
     {
-        await _tokenHandler.MakeAllTokensInvalid();
+        //await _tokenHandler.MakeAllTokensInvalid();
         await _tokenHandler.DeleteInactiveTokens();
     }
 }
