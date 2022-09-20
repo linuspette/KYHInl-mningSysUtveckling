@@ -10,12 +10,6 @@
         Height="250" 
         Width="400">
 
-    <WindowChrome.WindowChrome>
-        <WindowChrome 
-            CaptionHeight="5"
-            ResizeBorderThickness="5" />
-    </WindowChrome.WindowChrome>
-
     <Grid Style="{StaticResource AppBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
@@ -64,7 +58,7 @@
                            />
                 <TextBlock Grid.Column="1" 
                            Style="{StaticResource Text-TemperatureDisplay}" 
-                       Text="23°C" />
+                           x:Name="txtBlockTemperatureDisplay"/>
             </Grid>
 
         </StackPanel>

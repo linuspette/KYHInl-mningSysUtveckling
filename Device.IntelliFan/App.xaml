@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/WpfShared;component/Resources/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/WpfShared;component/Resources/Buttons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/WpfShared;component/Resources/ColorPalette.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

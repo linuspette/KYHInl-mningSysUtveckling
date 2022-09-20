@@ -29,8 +29,8 @@ namespace WebApi.Controllers
             var result = await _tokenHandler.ValidateTokenAsync(token);
             if (result == ITokenHandler.StatusCode.Valid)
                 return await _userManager.GetAllUsersAsync(take);
-            else if(result == ITokenHandler.StatusCode.Expired)
-            return new UnauthorizedObjectResult(_tokenReturnStatements.TokenReturnStatement(result));
+            else if (result == ITokenHandler.StatusCode.Expired)
+                return new UnauthorizedObjectResult(_tokenReturnStatements.TokenReturnStatement(result));
 
             return new UnauthorizedObjectResult(_tokenReturnStatements.TokenReturnStatement(result));
         }

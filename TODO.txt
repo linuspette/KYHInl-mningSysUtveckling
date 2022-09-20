@@ -1,14 +1,10 @@
-//Azure Functions//
-
-	Migrera över helt till web api?
-
 //Devices//
 	Migrera över helt till web api?
 	
 		//IntelliFan//
 			Koppla ihop med IntelliTemp så att man kan auto-styra fläkten med hjälp av temperatur-data
 			Datan från IntelliTemp ska finnas i både Fahrenheit, samt Celsius. Intellifan ska kunna få denna data och själv kunna konvertera temperaturen om behov finns.
-			Designa om GUIn så att den blir mer egen.
+			Designa om GUIn så att den blir mer egen. Klart
 
 		//IntelliTemp//
 			Skriva en random-algorithm för att generera trovärdiga temperaturer.
