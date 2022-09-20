@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using Client.Administration.Helpers;
-using Client.Administration.Windows.Authentication;
+﻿using Client.Administration.Helpers;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 
 namespace Client.Administration
 {
@@ -28,13 +21,10 @@ namespace Client.Administration
         {
             services.AddScoped<ITokenManager, TokenManager>();
             services.AddScoped<IApiClient, ApiClient>();
-            services.AddSingleton<LogIn>();
         }
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            var mainWindow = serviceProvider.GetService<LogIn>() ?? null!;
-            mainWindow.Show();
         }
     }
 }

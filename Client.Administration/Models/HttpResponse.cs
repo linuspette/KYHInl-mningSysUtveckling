@@ -2,6 +2,6 @@
 
 public class HttpResponse
 {
-    public string Message { get; set; }
+    public string Message { get; set; } = null!;
     public bool Suceeded { get; set; }
 }

@@ -8,6 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Images\bedroom.jpg" />
+    <None Remove="Assets\Images\kitchen.jpg" />
+    <None Remove="Assets\Images\living_room.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Images\bedroom.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\kitchen.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
@@ -37,6 +52,21 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="MVVM\Models\" />
+    <Folder Include="MVVM\ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Images\living_room.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Resources\Menu.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>

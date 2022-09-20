@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Client.Administration.Models;
+using Shared.Models.Input.Users;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Client.Administration.Models;
-using Microsoft.Extensions.Configuration;
-using Shared.Models.Input.Users;
-using Shared.Models.View.Device;
 
 namespace Client.Administration.Helpers;
 
@@ -40,9 +36,9 @@ public class ApiClient : IApiClient
                 return true;
             }
         }
-        catch{}
+        catch { }
 
-            return false;
+        return false;
     }
     public async Task<HttpResponse> SignUpAsync(SignUp model)
     {
@@ -66,7 +62,7 @@ public class ApiClient : IApiClient
                 Suceeded = false
             };
         }
-        catch{}
+        catch { }
 
         return new HttpResponse
         {
@@ -79,17 +75,17 @@ public class ApiClient : IApiClient
         try
         {
             var result = await _httpClient.PostAsJsonAsync<string>($"{Properties.Settings.Default.ApiBaseAddress}/authentication/validatetoken", _tokenManager.GetAccessToken());
-            if (result.IsSuccessStatusCode){}
-                return bool.Parse(await result.Content.ReadAsStringAsync());
+            if (result.IsSuccessStatusCode) { }
+            return bool.Parse(await result.Content.ReadAsStringAsync());
         }
-        catch{}
+        catch { }
 
         return false;
     }
 
     //IotDevices
-    public async Task<List<IotDevice>> GetUserIotDevices()
-    {
+    //public async Task<List<IotDevice>> GetUserIotDevices()
+    //{
 
-    }
+    //}
 }
