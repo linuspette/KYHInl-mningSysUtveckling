@@ -62,5 +62,10 @@
             </Grid>
 
         </StackPanel>
+            <Button Grid.Row="2"
+                    Grid.Column="3"
+                    x:Name="btnFanControl"
+                    Content="Start fan"
+                    Click="BtnClick_FanSwitch"/>
     </Grid>
 </Window>
