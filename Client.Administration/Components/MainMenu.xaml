@@ -9,9 +9,9 @@
              d:DesignWidth="720">
     <Border Style="{StaticResource menuBar}">
         <StackPanel Orientation="Horizontal">
-            <RadioButton Style="{StaticResource menuButton}" Content="&#xe01d;" IsChecked="True" />
-            <RadioButton Style="{StaticResource menuButton}" Content="&#xf8f7;"/>
-            <RadioButton Style="{StaticResource menuButton}" Content="&#xf79a;"/>
+            <RadioButton Command="{Binding KitchenViewCommand}" Style="{StaticResource menuButton}" Content="&#xe01d;" IsChecked="True" />
+            <RadioButton Command="{Binding BedRoomViewCommand}" Style="{StaticResource menuButton}" Content="&#xf8f7;"/>
+            <RadioButton Command="{Binding LivingRoomViewCommand}" Style="{StaticResource menuButton}" Content="&#xf79a;"/>
         </StackPanel>
     </Border>
 </UserControl>

@@ -8,12 +8,12 @@
         xmlns:viewModels="clr-namespace:Client.Administration.MVVM.ViewModels"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Background="Transparent"
         WindowStyle="None"
         AllowsTransparency="True"
+        Background="Transparent"
         Title="SmartApp" 
         Height="720" 
-        Width="1080">
+        Width="1280">
     <Window.DataContext>
         <viewModels:MainViewModel/>
     </Window.DataContext>

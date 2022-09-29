@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client.Administration.MVVM.Views"
+             xmlns:components="clr-namespace:Client.Administration.Components"
              mc:Ignorable="d" 
              d:DesignHeight="720" 
-             d:DesignWidth="1080">
+             d:DesignWidth="1280">
     <Border x:Name="Kitchen" Style="{StaticResource pageBorder}">
         <Border CornerRadius="10">
             <Border.Background>
@@ -30,31 +31,46 @@
                         <ColumnDefinition Width="*"/>
 
                     </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0"
+                    <StackPanel Grid.Column="0"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center">
-                            <TextBlock Text="Kitchen"
+                        <TextBlock Text="{Binding Title}"
                                        FontSize="36"
                                        FontWeight="Bold"
                                        Foreground="White"
                             />
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Foreground="White"
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Foreground="White"
                                            Margin="0 20 20 20">
-                                    <Run Text="24"
+                                    <Run Text="{Binding Temperature}"
                                          FontSize="32"/>
-                                    <Run Text="°C"
+                                    <Run Text="{Binding TemperatureScale}"
                                          FontSize="22"/>
-                                </TextBlock>                                
-                                <TextBlock Foreground="White"
+                            </TextBlock>
+                            <TextBlock Foreground="White"
                                            Margin="20 20 20 0">
-                                    <Run Text="44"
+                                    <Run Text="{Binding Humidity}"
                                          FontSize="32"/>
-                                    <Run Text="%"
+                                    <Run Text="{Binding HumidityScale}"
                                          FontSize="22"/>
-                                </TextBlock>
+                            </TextBlock>
                         </StackPanel>
-                        </StackPanel>
+                    </StackPanel>
+                    <Grid Grid.Column="1" 
+                          Margin="40 0 0 0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <components:TileComponent Title="IntelliFan" IconActive="&#xf863;" IconInActive="&#xf863;" Grid.Row="1" Grid.Column="0" />
+                    </Grid>
                 </Grid>
             </Grid>
         </Border>

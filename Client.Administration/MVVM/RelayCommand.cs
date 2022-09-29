@@ -5,8 +5,8 @@ namespace Client.Administration.MVVM;
 
 internal class RelayCommand : ICommand
 {
-    private Action<object> _execute = null!;
-    private Func<object, bool> _canExecute = null!;
+    private Action<object> _execute;
+    private Func<object, bool> _canExecute;
 
     public event EventHandler? CanExecuteChanged
     {

@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="Client.Administration.Components.TileComponent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Client.Administration.Components"
+             mc:Ignorable="d" >
+    <Border Style="{StaticResource tileBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Style="{StaticResource tileToggleText}"
+                />
+
+                <CheckBox x:Name="toggle" 
+                          Grid.Column="1"
+                          Style="{StaticResource toggleButton}"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                />
+            </Grid>
+            <StackPanel Grid.Row="1" 
+                        Margin="0 10 0 0">
+                <TextBlock 
+                           Style="{StaticResource tileIcon}"
+                />
+                <TextBlock Text="{Binding ElementName=tile,Path=Title}"
+                           HorizontalAlignment="Center"
+                           Margin="0 8 0 0"
+                           Foreground="white"
+                           />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

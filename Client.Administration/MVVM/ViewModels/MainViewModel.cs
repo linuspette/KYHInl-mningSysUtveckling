@@ -4,17 +4,18 @@ internal class MainViewModel : ObservableObject
 {
     public MainViewModel()
     {
-        KitchenVM = new KitchenViewModel();
-        CurrentView = KitchenVM;
+        KitchenViewModel = new KitchenViewModel();
+        LivingRoomViewModel = new LivingRoomViewModel();
+        BedRoomViewModel = new BedRoomViewModel();
 
-        KitchenViewCommand = new RelayCommand(x => { CurrentView = KitchenVM; });
+        KitchenViewCommand = new RelayCommand(x => { CurrentView = KitchenViewModel; });
+        LivingRoomViewCommand = new RelayCommand(x => { CurrentView = LivingRoomViewModel; });
+        BedRoomViewCommand = new RelayCommand(x => { CurrentView = BedRoomViewModel; });
+
+        CurrentView = KitchenViewModel;
     }
 
-    private object _currentView = null!;
-
-    public RelayCommand KitchenViewCommand { get; set; } = null!;
-    public KitchenViewModel KitchenVM { get; set; } = null!;
-
+    private object _currentView;
     public object CurrentView
     {
         get { return _currentView; }
@@ -24,4 +25,16 @@ internal class MainViewModel : ObservableObject
             OnPropertyChanged();
         }
     }
+
+    //Kitchen view
+    public RelayCommand KitchenViewCommand { get; set; }
+    public KitchenViewModel KitchenViewModel { get; set; }
+
+    //Living room view
+    public RelayCommand LivingRoomViewCommand { get; set; }
+    public LivingRoomViewModel LivingRoomViewModel { get; set; }
+
+    //Bed room view
+    public RelayCommand BedRoomViewCommand { get; set; }
+    public BedRoomViewModel BedRoomViewModel { get; set; }
 }
