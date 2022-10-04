@@ -1,7 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.Azure.Devices.Client;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using Shared.Models.Iot;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
-using Microsoft.Extensions.Configuration;
 using WpfShared.Helpers;
 
 namespace Device.IntelliFan
@@ -15,9 +19,12 @@ namespace Device.IntelliFan
 
         public MainWindow(IConfiguration configuration)
         {
-            _configuration = configuration;
             InitializeComponent();
+
+            _configuration = configuration;
+
             UpdateConnectionState().ConfigureAwait(false);
+            SendDataToIotHub().ConfigureAwait(false);
 
             DeviceManager.Initialize("intellifan-l1001", "Fan", "Linus", _configuration["SysDevAzureFunctionsKey"]);
             DeviceManager.ConnectAsync().ConfigureAwait(false);
@@ -85,6 +92,31 @@ namespace Device.IntelliFan
             else
             {
                 btnToggle.Content = "Stop Fan";
+            }
+        }
+
+        private async Task SendDataToIotHub()
+        {
+            while (true)
+            {
+                if (DeviceManager.isConnected)
+                {
+                    try
+                    {
+                        var payload = new IntelliFanPayload
+                        {
+                            DeviceId = DeviceManager.DeviceId,
+                            Type = DeviceManager.DeviceType,
+                            IsRunning = isRunning,
+                        };
+
+                        var msg = new Message(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload)));
+
+                        await DeviceManager.SendMessageToIotHubAsync(msg);
+                    }
+                    catch { }
+                }
+                await Task.Delay(30000);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
 namespace Device.IntelliFan
@@ -18,7 +19,11 @@ namespace Device.IntelliFan
 
         private void ConfigureServices(ServiceCollection services)
         {
+            var builder = new ConfigurationBuilder();
 
+            IConfiguration configuration = builder.Build();
+
+            services.AddSingleton(configuration);
             services.AddSingleton<MainWindow>();
         }
 

@@ -6,7 +6,6 @@ using Shared.Models.Response.Devices;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 
 namespace WpfShared.Helpers;
 
@@ -21,7 +20,7 @@ public static class DeviceManager
         Connected
     }
 
-    private static DeviceClient? deviceClient;
+    private static DeviceClient deviceClient = null!;
     private static string baseUrl = "https://sysdevfunctions.azurewebsites.net/api/devices/connect";
     private static string AzureFunctionsAccessToken = string.Empty;
 
@@ -97,7 +96,7 @@ public static class DeviceManager
                                     await deviceClient.UpdateReportedPropertiesAsync(twinCollection);
                                     var twin = deviceClient.GetTwinAsync();
 
-                                    var result = await _httpClient.GetAsync($"{baseUrl}{AzureFunctionsAccessToken}{DeviceId}");
+                                    var result = await _httpClient.GetAsync($"{baseUrl}?code={AzureFunctionsAccessToken}&deviceId={DeviceId}");
                                     if (result.IsSuccessStatusCode)
                                     {
                                         var connectionState = await result.Content.ReadAsStringAsync();
@@ -125,5 +124,10 @@ public static class DeviceManager
         }
         if (!isConnected)
             SetConnectionState(ConnectionState.NotConnected);
+    }
+
+    public static async Task SendMessageToIotHubAsync(Message msg)
+    {
+        await deviceClient.SendEventAsync(msg);
     }
 }

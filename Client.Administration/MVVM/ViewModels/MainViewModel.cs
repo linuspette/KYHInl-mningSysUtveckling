@@ -15,7 +15,7 @@ internal class MainViewModel : ObservableObject
         CurrentView = KitchenViewModel;
     }
 
-    private object _currentView;
+    private object _currentView = null!;
     public object CurrentView
     {
         get { return _currentView; }

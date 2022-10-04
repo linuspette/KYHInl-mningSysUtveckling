@@ -21,13 +21,13 @@ public static class TemperatureGenerator
     public static double TemperatureC { get; set; } = 20;
     public static double TemperatureF { get; set; } = ConvertToFahrenheit();
 
-    public static void GenerateTemperature()
+    public static void GetTemperature()
     {
         double temp = 0;
 
         do
         {
-            temp = GetTemperature();
+            temp = GenerateTemperature();
             validTemp = ValidateTemperature(temp);
         } while (!validTemp);
 
@@ -48,7 +48,7 @@ public static class TemperatureGenerator
         return ((TemperatureC * (double)9/5) + 32);
     }
 
-    private static double GetTemperature()
+    private static double GenerateTemperature()
     {
         if (fanIsOn)
         {

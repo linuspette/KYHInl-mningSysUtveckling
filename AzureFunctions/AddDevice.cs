@@ -18,7 +18,7 @@ namespace AzureFunctions
         private static readonly RegistryManager _registryManager = RegistryManager.CreateFromConnectionString(Environment.GetEnvironmentVariable("IotHub"));
         [FunctionName("AddDevice")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "devices/add")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "devices/add")] HttpRequest req,
             ILogger log)
         {
             try

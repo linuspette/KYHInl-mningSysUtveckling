@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Models\Input\Roles\" />
+    <Folder Include="Models\Iot\" />
     <Folder Include="Models\Response\Devices\" />
     <Folder Include="Models\View\Device\" />
     <Folder Include="Models\View\Roles\" />

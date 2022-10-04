@@ -16,7 +16,7 @@ namespace AzureFunctions
 
         [FunctionName("GetDeviceConnectionState")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "devices/connect")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "devices/connect")] HttpRequest req,
             ILogger log)
         {
             string deviceId = req.Query["deviceId"];
