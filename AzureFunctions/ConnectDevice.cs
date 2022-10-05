@@ -1,23 +1,17 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Shared.Models.Input.Devices;
 using Shared.Models.Response.Devices;
+using System;
+using System.Threading.Tasks;
 
 namespace AzureFunctions
 {
     public static class ConnectDevice
     {
-        private static readonly RegistryManager _registryManager =
-                RegistryManager.CreateFromConnectionString(Environment.GetEnvironmentVariable("IotHub"));
-
         [FunctionName("ConnectDevice")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "devices/connect")] HttpRequest req,
@@ -26,25 +20,14 @@ namespace AzureFunctions
 
             try
             {
-                var body = JsonConvert.DeserializeObject<HttpDeviceRequest>(await new StreamReader(req.Body).ReadToEndAsync());
+                using var registryManager =
+                    RegistryManager.CreateFromConnectionString(Environment.GetEnvironmentVariable("IotHub"));
 
-                if (string.IsNullOrEmpty(body.DeviceId))
-                    return new BadRequestObjectResult(new HttpDeviceResponse("DeviceId is required"));
+                var device = await registryManager.GetDeviceAsync(req.Query["deviceId"]);
+                //If device is null, create new device
+                device ??= await registryManager.AddDeviceAsync(new Device(req.Query["deviceId"]));
 
-                var device = await _registryManager.GetDeviceAsync(body.DeviceId);
-
-                if (device == null)
-                    device = await _registryManager.AddDeviceAsync(new Device(body.DeviceId));
-
-                if (device != null)
-                {
-                    var twin = await _registryManager.GetTwinAsync(device.Id);
-                    twin.Properties.Desired["interval"] = 10000;
-
-                    await _registryManager.UpdateTwinAsync(twin.DeviceId, twin, twin.ETag);
-                }
-
-                return new OkObjectResult(new HttpDeviceResponse("Device connected", device));
+                return new OkObjectResult($"{Environment.GetEnvironmentVariable("IotHub").Split(";")[0]};DeviceId{device.Id};SharedAccessKey={device.Authentication.SymmetricKey.PrimaryKey}");
             }
             catch (Exception ex)
             {
