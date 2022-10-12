@@ -28,10 +28,20 @@ namespace Device.IntelliTemp
         {
             InitializeComponent();
 
-            DeviceManager.Initialize("intelliTemp-f1001", "Temperature Sensor", "Linus", "Kitchen");
-            DeviceManager.ConnectAsync().ConfigureAwait(false);
+            DeviceManager.Initialize(new DeviceSettings
+            {
+                DeviceId = "intelliTemp-f1002",
+                DeviceName = "IntelliTemp",
+                Owner = "Linus",
+                Location = "Living Room",
+                DeviceType = "TempSensor",
+                Interval = 10000,
+                DeviceState = false
+            });
+            Task.Run(DeviceManager.ConnectAsync);
 
             UpdateConnectionStateAsync().ConfigureAwait(false);
+            DeviceManager.SetDirectMethodAsync().ConfigureAwait(false);
 
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += WarningOn;
@@ -88,8 +98,8 @@ namespace Device.IntelliTemp
                 {
                     var payload = new IntelliTempPayload
                     {
-                        DeviceId = DeviceManager.DeviceId,
-                        Type = DeviceManager.DeviceType,
+                        DeviceId = DeviceManager._deviceSettings.DeviceId,
+                        Type = DeviceManager._deviceSettings.DeviceType,
                         Temperature = TemperatureGenerator.TemperatureC,
                         Humidity = HumidityGenerator.Humidity,
                     };

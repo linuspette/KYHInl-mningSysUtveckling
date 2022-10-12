@@ -2,9 +2,12 @@
 using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
 using Shared.Models.Input.Devices;
+using Shared.Models.Iot;
 using Shared.Models.Response.Devices;
+using System;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace WpfShared.Helpers;
@@ -20,26 +23,16 @@ public static class DeviceManager
         Connected
     }
 
+    public static DeviceSettings _deviceSettings;
     private static DeviceClient deviceClient = null!;
     private static string baseUrl = "https://sysdevfunctions.azurewebsites.net/api/devices/connect";
-    //private static string AzureFunctionsAccessToken = string.Empty;
 
-    public static bool isConnected { get; private set; } = false;
-    public static string ConnectionStateMessage { get; private set; } = null!;
-    public static string DeviceId { get; private set; } = null!;
-    public static string Owner { get; private set; } = null!;
-    public static string Location { get; set; } = null!;
-    public static string DeviceType { get; private set; } = null!;
-    public static int Interval { get; set; }
+    public static bool isConnected { get; set; } = false;
+    public static string ConnectionStateMessage { get; set; } = null!;
 
-    public static void Initialize(string deviceId, string deviceType, string owner, string location, int interval = 10000)
+    public static void Initialize(DeviceSettings deviceSettings)
     {
-        DeviceId = deviceId;
-        DeviceType = deviceType;
-        Owner = owner;
-        Location = location;
-        Interval = interval;
-        //AzureFunctionsAccessToken = azureFunctionsAccessToken;
+        _deviceSettings = deviceSettings;
     }
 
     public static void SetConnectionState(ConnectionState state)
@@ -47,24 +40,24 @@ public static class DeviceManager
         switch (state)
         {
             case ConnectionState.NotConnected:
-                ConnectionStateMessage = "Not connected";
+                DeviceManager.ConnectionStateMessage = "Not connected";
                 break;
 
             case ConnectionState.Connecting:
-                ConnectionStateMessage = "Connecting. Please wait...";
+                DeviceManager.ConnectionStateMessage = "Connecting. Please wait...";
                 break;
 
             case ConnectionState.StillConnecting:
-                ConnectionStateMessage = "Still connecting. Please wait...";
+                DeviceManager.ConnectionStateMessage = "Still connecting. Please wait...";
                 break;
 
             case ConnectionState.Initializing:
-                ConnectionStateMessage = "Initializing. Please wait...";
+                DeviceManager.ConnectionStateMessage = "Initializing. Please wait...";
                 break;
 
             case ConnectionState.Connected:
-                isConnected = true;
-                ConnectionStateMessage = "Connected";
+                DeviceManager.isConnected = true;
+                DeviceManager.ConnectionStateMessage = "Connected";
                 break;
         }
     }
@@ -73,7 +66,7 @@ public static class DeviceManager
     {
         for (int i = 0; i < 10; i++)
         {
-            if (!isConnected)
+            if (isConnected)
             {
                 SetConnectionState(i > 5 ? ConnectionState.StillConnecting : ConnectionState.Connecting);
 
@@ -82,7 +75,7 @@ public static class DeviceManager
                     using (var _httpClient = new HttpClient())
                     {
                         var response =
-                            await _httpClient.PostAsJsonAsync(baseUrl, new HttpDeviceRequest { DeviceId = DeviceId });
+                            await _httpClient.PostAsJsonAsync(baseUrl, new HttpDeviceRequest { DeviceId = _deviceSettings.DeviceId });
                         if (response.IsSuccessStatusCode)
                         {
                             var data = JsonConvert.DeserializeObject<HttpDeviceResponse>(
@@ -95,17 +88,15 @@ public static class DeviceManager
                                     SetConnectionState(ConnectionState.Initializing);
                                     var twin = await deviceClient.GetTwinAsync();
 
-                                    try { Interval = (int)twin.Properties.Desired["interval"]; }
+                                    try
+                                    {
+                                        _deviceSettings.Interval = (int)twin.Properties.Desired["interval"];
+                                    }
                                     catch { }
 
-                                    var twinCollection = new TwinCollection();
-                                    twinCollection["location"] = Location;
-                                    twinCollection["owner"] = Owner;
-                                    twinCollection["deviceType"] = DeviceType;
+                                    await SetDeviceTwinAsync();
 
-                                    await deviceClient.UpdateReportedPropertiesAsync(twinCollection);
-
-                                    var result = await _httpClient.GetAsync($"{baseUrl}?deviceId={DeviceId}");
+                                    var result = await _httpClient.GetAsync($"{baseUrl}?deviceId={_deviceSettings.DeviceId}");
                                     if (result.IsSuccessStatusCode)
                                     {
                                         var connectionState = await result.Content.ReadAsStringAsync();
@@ -137,6 +128,45 @@ public static class DeviceManager
 
     public static async Task SendMessageToIotHubAsync(Message msg)
     {
-        await deviceClient.SendEventAsync(msg);
+        if (isConnected && deviceClient != null && _deviceSettings.DeviceState)
+            await deviceClient.SendEventAsync(msg);
+    }
+
+    public static async Task SetDirectMethodAsync()
+    {
+        while (deviceClient == null)
+        {
+            if (deviceClient != null)
+                await deviceClient.SetMethodHandlerAsync("OnOff", OnOff, null);
+        }
+    }
+
+    private static Task<MethodResponse> OnOff(MethodRequest methodrequest, object usercontext)
+    {
+        try
+        {
+            var data = JsonConvert.DeserializeObject<dynamic>(methodrequest.DataAsJson);
+            _deviceSettings.DeviceState = data!.deviceState;
+
+            SetDeviceTwinAsync().ConfigureAwait(false);
+            return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(_deviceSettings)), 200));
+
+        }
+        catch (Exception e)
+        {
+            return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(e)), 400));
+        }
+    }
+
+    private static async Task SetDeviceTwinAsync()
+    {
+        var twinCollection = new TwinCollection();
+        twinCollection["location"] = _deviceSettings.Location;
+        twinCollection["owner"] = _deviceSettings.Owner;
+        twinCollection["deviceType"] = _deviceSettings.DeviceType;
+        twinCollection["deviceState"] = _deviceSettings.DeviceState;
+        twinCollection["deviceName"] = _deviceSettings.DeviceName;
+
+        await deviceClient.UpdateReportedPropertiesAsync(twinCollection);
     }
 }

@@ -18,11 +18,23 @@ namespace Device.IntelliFan
         {
             InitializeComponent();
 
-            DeviceManager.Initialize("intellifan-l1001", "Fan", "Linus", "Kitchen");
-            DeviceManager.ConnectAsync().ConfigureAwait(false);
+            DeviceManager.Initialize(new DeviceSettings
+            {
+                DeviceId = "intellifan-l1002",
+                DeviceName = "IntelliFan",
+                Owner = "Linus",
+                Location = "Living Room",
+                DeviceType = "Fan",
+                Interval = 10000,
+                DeviceState = false
+            });
+            //DeviceManager.ConnectAsync().ConfigureAwait(false);
+
+            Task.Run(DeviceManager.ConnectAsync);
 
             UpdateConnectionStateAsync().ConfigureAwait(false);
             SendDataAsync().ConfigureAwait(false);
+            DeviceManager.SetDirectMethodAsync().ConfigureAwait(false);
         }
 
         private static bool isRunning = false;
@@ -100,8 +112,8 @@ namespace Device.IntelliFan
                     {
                         var payload = new IntelliFanPayload
                         {
-                            DeviceId = DeviceManager.DeviceId,
-                            Type = DeviceManager.DeviceType,
+                            DeviceId = DeviceManager._deviceSettings.DeviceId,
+                            Type = DeviceManager._deviceSettings.DeviceType,
                             IsRunning = isRunning,
                         };
 

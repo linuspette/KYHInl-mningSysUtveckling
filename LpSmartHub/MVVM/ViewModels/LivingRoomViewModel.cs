@@ -1,7 +1,9 @@
 ﻿using LpSmartHub.Helpers;
 using LpSmartHub.MVVM.Models;
+using LpSmartHub.Services;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -10,16 +12,18 @@ namespace LpSmartHub.MVVM.ViewModels;
 public class LivingRoomViewModel : BaseViewModel
 {
     private readonly NavigationStore _navigationStore;
+    private readonly IDeviceService _deviceService;
 
     public ICommand NavigateToSettings { get; }
 
-    public LivingRoomViewModel(NavigationStore navigationStore)
+    public LivingRoomViewModel(NavigationStore navigationStore, IDeviceService deviceService)
     {
         _navigationStore = navigationStore;
+        _deviceService = deviceService;
 
         DeviceItems = new ObservableCollection<DeviceItem>();
         NavigateToSettings =
-            new NavigateCommand<LivingRoomViewModel>(navigationStore, () => new LivingRoomViewModel(_navigationStore));
+            new NavigateCommand<LivingRoomViewModel>(navigationStore, () => new LivingRoomViewModel(_navigationStore, _deviceService));
 
         SetClock();
         GetDeviceItemsAsync().ConfigureAwait(false);
@@ -77,6 +81,18 @@ public class LivingRoomViewModel : BaseViewModel
 
     private async Task GetDeviceItemsAsync()
     {
+        var result = await _deviceService.GetDevicesAsync("select * from devices");
 
+        result.ForEach(device =>
+        {
+            var item = DeviceItems?.FirstOrDefault(x => x.DeviceId == device.DeviceId);
+            if (item == null)
+                DeviceItems?.Add(device);
+            else
+            {
+                var index = _deviceItems!.IndexOf(item);
+                _deviceItems[index] = device;
+            }
+        });
     }
 }

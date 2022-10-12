@@ -1,5 +1,6 @@
 ﻿using LpSmartHub.Helpers;
 using LpSmartHub.MVVM.ViewModels;
+using LpSmartHub.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
@@ -19,13 +20,16 @@ namespace LpSmartHub
             {
                 services.AddSingleton<MainWindow>();
                 services.AddSingleton<NavigationStore>();
+                services.AddScoped<IDeviceService, DeviceService>();
             }).Build();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             var navigationStore = app!.Services.GetRequiredService<NavigationStore>();
-            navigationStore.CurrentViewModel = new LivingRoomViewModel(navigationStore);
+            var deviceService = app!.Services.GetRequiredService<DeviceService>();
+
+            navigationStore.CurrentViewModel = new LivingRoomViewModel(navigationStore, deviceService);
 
             await app!.StartAsync();
             var MainWindow = app.Services.GetRequiredService<MainWindow>();
