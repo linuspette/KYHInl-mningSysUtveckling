@@ -26,6 +26,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,9 +52,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Helpers\" />
     <Folder Include="Models\" />
     <Folder Include="MVVM\Models\" />
-    <Folder Include="MVVM\ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,7 +64,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Resources\Menu.xaml">
+    <Page Update="Resources\MenuDictionary.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

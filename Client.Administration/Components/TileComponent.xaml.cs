@@ -36,13 +36,5 @@ namespace Client.Administration.Components
             get { return (string)GetValue(IconActiveProperty); }
             set { SetValue(IconActiveProperty, value); }
         }
-
-        public static readonly DependencyProperty IconInActiveProperty =
-            DependencyProperty.Register("IconInActive", typeof(string), typeof(TileComponent));
-        public string IconInActive
-        {
-            get { return (string)GetValue(IconInActiveProperty); }
-            set { SetValue(IconInActiveProperty, value); }
-        }
     }
 }

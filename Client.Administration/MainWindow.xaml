@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Client.Administration"
         xmlns:components="clr-namespace:Client.Administration.Components"
         xmlns:viewModels="clr-namespace:Client.Administration.MVVM.ViewModels"
+        xmlns:views="clr-namespace:Client.Administration.MVVM.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
@@ -15,7 +16,7 @@
         Height="720" 
         Width="1280">
     <Window.DataContext>
-        <viewModels:MainViewModel/>
+        <viewModels:BaseViewModel/>
     </Window.DataContext>
 
     <Border MouseDown="TitleBar_MouseDown" 
@@ -25,7 +26,13 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <ContentControl Grid.Row="0" Content="{Binding CurrentView}"/>
+            <ContentControl Grid.Row="0" Content="{Binding CurrentViewModel}">
+                <ContentControl.Resources>
+                    <DataTemplate DataType="{x:Type viewModels:KitchenViewModel}">
+                        <views:KitchenView/>
+                    </DataTemplate>
+                </ContentControl.Resources>
+            </ContentControl>
             <!--Main Menu-->
             <components:MainMenu Grid.Row="1"
                                  Margin="0 -140 0 0"/>

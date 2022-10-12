@@ -8,6 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="720" 
              d:DesignWidth="1280">
+    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
     <Border x:Name="Kitchen" Style="{StaticResource pageBorder}">
         <Border CornerRadius="10">
             <Border.Background>
@@ -20,10 +21,49 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+
+                <!-- Temp View -->
+                <TextBlock Grid.Row="0"
+                           Margin="10" 
+                           Padding="10" 
+                           HorizontalAlignment="Left" 
+                           VerticalAlignment="Center">
+                    <Run Text="&#xf769;" 
+                         FontSize="28" 
+                         Style="{StaticResource Run_Primary_Style}" 
+                         FontFamily="{StaticResource FontAwesome-Regular}"/>
+                    <Run Text="{Binding Temperature}" 
+                         FontSize="32" 
+                         Style="{StaticResource Run_Primary_Style}"/>
+                </TextBlock>
+
+                <!-- DateTime View -->
+                <StackPanel Grid.Row="0" 
+                           Margin="10"
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center">
+                    <TextBlock Text="{Binding CurrentTime}" 
+                               Padding="10 0 0 0"
+                               FontSize="60"
+                               Style="{StaticResource Text-Primary}"
+                               HorizontalAlignment="Center"
+                    />
+                    <TextBlock Text="{Binding CurrentDate}"
+                               Padding="0 0 0 10"
+                               FontSize="22"
+                               Style="{StaticResource Text-Primary}"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Close Button -->
+                <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                 <Button x:Name="btnClose"
                         Click="BtnClose_OnClick"
                         Grid.Row="0" 
-                        Style="{StaticResource closeButton}"/>
+                        Style="{StaticResource closeButton}"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"/>
+                
                 <Grid Grid.Row="1"
                       Margin="60 10">
                     <Grid.ColumnDefinitions>
@@ -31,31 +71,6 @@
                         <ColumnDefinition Width="*"/>
 
                     </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center">
-                        <TextBlock Text="{Binding Title}"
-                                       FontSize="36"
-                                       FontWeight="Bold"
-                                       Foreground="White"
-                            />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Foreground="White"
-                                           Margin="0 20 20 20">
-                                    <Run Text="{Binding Temperature}"
-                                         FontSize="32"/>
-                                    <Run Text="{Binding TemperatureScale}"
-                                         FontSize="22"/>
-                            </TextBlock>
-                            <TextBlock Foreground="White"
-                                           Margin="20 20 20 0">
-                                    <Run Text="{Binding Humidity}"
-                                         FontSize="32"/>
-                                    <Run Text="{Binding HumidityScale}"
-                                         FontSize="22"/>
-                            </TextBlock>
-                        </StackPanel>
-                    </StackPanel>
                     <Grid Grid.Column="1" 
                           Margin="40 0 0 0"
                           HorizontalAlignment="Right"
@@ -69,7 +84,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <components:TileComponent Title="IntelliFan" IconActive="&#xf863;" IconInActive="&#xf863;" Grid.Row="1" Grid.Column="0" />
+                        <components:TileComponent Title="IntelliFan" IconActive="&#xf863;" Grid.Row="1" Grid.Column="0" />
                     </Grid>
                 </Grid>
             </Grid>

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Client.Administration.MVVM.Views
+namespace LpSmartHub.MVVM.Views
 {
     /// <summary>
     /// Interaction logic for LivingRoomView.xaml
@@ -12,7 +12,8 @@ namespace Client.Administration.MVVM.Views
         {
             InitializeComponent();
         }
-        private void BtnClose_OnClick(object sender, RoutedEventArgs e)
+
+        private void CloseButton_OnClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }

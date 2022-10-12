@@ -1,12 +1,12 @@
-﻿using Client.Administration.Helpers;
+﻿using LpSmartHub.Helpers;
 
-namespace Client.Administration.MVVM.ViewModels;
+namespace LpSmartHub.MVVM.ViewModels;
 
-internal class MainViewModel : BaseViewModel
+public class MainViewModel : BaseViewModel
 {
     private readonly NavigationStore _navigationStore;
-    public BaseViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
 
+    public BaseViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
     public MainViewModel(NavigationStore navigationStore)
     {
         _navigationStore = navigationStore;

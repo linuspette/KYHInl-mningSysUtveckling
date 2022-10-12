@@ -71,7 +71,7 @@
             </StackPanel>
 
             <TextBlock x:Name="tblockConnectionState"
-                       Style="{StaticResource Text-Primary}"/>
+                       Style="{StaticResource Text-Primary}"/> 
         </StackPanel>
     </Grid>
 </Window>

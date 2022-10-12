@@ -22,20 +22,24 @@ public static class DeviceManager
 
     private static DeviceClient deviceClient = null!;
     private static string baseUrl = "https://sysdevfunctions.azurewebsites.net/api/devices/connect";
-    private static string AzureFunctionsAccessToken = string.Empty;
+    //private static string AzureFunctionsAccessToken = string.Empty;
 
     public static bool isConnected { get; private set; } = false;
     public static string ConnectionStateMessage { get; private set; } = null!;
     public static string DeviceId { get; private set; } = null!;
     public static string Owner { get; private set; } = null!;
+    public static string Location { get; set; } = null!;
     public static string DeviceType { get; private set; } = null!;
+    public static int Interval { get; set; }
 
-    public static void Initialize(string deviceId, string deviceType, string owner, string azureFunctionsAccessToken)
+    public static void Initialize(string deviceId, string deviceType, string owner, string location, int interval = 10000)
     {
         DeviceId = deviceId;
         DeviceType = deviceType;
         Owner = owner;
-        AzureFunctionsAccessToken = azureFunctionsAccessToken;
+        Location = location;
+        Interval = interval;
+        //AzureFunctionsAccessToken = azureFunctionsAccessToken;
     }
 
     public static void SetConnectionState(ConnectionState state)
@@ -87,16 +91,21 @@ public static class DeviceManager
                             {
                                 try
                                 {
-                                    deviceClient = DeviceClient.CreateFromConnectionString(data.ConnectionString);
+                                    deviceClient = DeviceClient.CreateFromConnectionString(data.ConnectionString, TransportType.Mqtt);
                                     SetConnectionState(ConnectionState.Initializing);
+                                    var twin = await deviceClient.GetTwinAsync();
+
+                                    try { Interval = (int)twin.Properties.Desired["interval"]; }
+                                    catch { }
+
                                     var twinCollection = new TwinCollection();
+                                    twinCollection["location"] = Location;
                                     twinCollection["owner"] = Owner;
                                     twinCollection["deviceType"] = DeviceType;
 
                                     await deviceClient.UpdateReportedPropertiesAsync(twinCollection);
-                                    var twin = deviceClient.GetTwinAsync();
 
-                                    var result = await _httpClient.GetAsync($"{baseUrl}?code={AzureFunctionsAccessToken}&deviceId={DeviceId}");
+                                    var result = await _httpClient.GetAsync($"{baseUrl}?deviceId={DeviceId}");
                                     if (result.IsSuccessStatusCode)
                                     {
                                         var connectionState = await result.Content.ReadAsStringAsync();

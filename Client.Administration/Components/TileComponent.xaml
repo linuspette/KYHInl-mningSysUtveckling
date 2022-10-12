@@ -34,7 +34,7 @@
                 <TextBlock 
                            Style="{StaticResource tileIcon}"
                 />
-                <TextBlock Text="{Binding ElementName=tile,Path=Title}"
+                <TextBlock Text="{Binding ElementName = tile, Path=Title}"
                            HorizontalAlignment="Center"
                            Margin="0 8 0 0"
                            Foreground="white"

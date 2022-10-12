@@ -1,5 +1,4 @@
 ﻿using Microsoft.Azure.Devices.Client;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Shared.Models.Iot;
 using System.Text;
@@ -15,24 +14,20 @@ namespace Device.IntelliFan
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IConfiguration _configuration;
-
-        public MainWindow(IConfiguration configuration)
+        public MainWindow()
         {
             InitializeComponent();
 
-            _configuration = configuration;
-
-            UpdateConnectionState().ConfigureAwait(false);
-            SendDataToIotHub().ConfigureAwait(false);
-
-            DeviceManager.Initialize("intellifan-l1001", "Fan", "Linus", _configuration["SysDevAzureFunctionsKey"]);
+            DeviceManager.Initialize("intellifan-l1001", "Fan", "Linus", "Kitchen");
             DeviceManager.ConnectAsync().ConfigureAwait(false);
+
+            UpdateConnectionStateAsync().ConfigureAwait(false);
+            SendDataAsync().ConfigureAwait(false);
         }
 
         private static bool isRunning = false;
 
-        private async Task UpdateConnectionState()
+        private async Task UpdateConnectionStateAsync()
         {
             while (true)
             {
@@ -95,7 +90,7 @@ namespace Device.IntelliFan
             }
         }
 
-        private async Task SendDataToIotHub()
+        private async Task SendDataAsync()
         {
             while (true)
             {

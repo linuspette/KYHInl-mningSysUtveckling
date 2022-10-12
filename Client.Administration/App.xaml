@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:Client.Administration"
              xmlns:viewModels="clr-namespace:Client.Administration.MVVM.ViewModels"
              xmlns:views="clr-namespace:Client.Administration.MVVM.Views"
-             StartupUri="MainWindow.xaml">
+>
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -16,20 +16,8 @@
                 <ResourceDictionary Source="Resources/Borders.xaml"/>
                 <ResourceDictionary Source="Resources/Buttons.xaml"/>
                 <ResourceDictionary Source="Resources/TileDictionary.xaml"/>
+                <ResourceDictionary Source="Resources/FontStylingDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
-            <DataTemplate DataType="{x:Type viewModels:KitchenViewModel}">
-                <views:KitchenView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type viewModels:BedRoomViewModel}">
-                <views:BedRoomView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type viewModels:LivingRoomViewModel}">
-                <views:LivingRoomView/>
-            </DataTemplate>
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>

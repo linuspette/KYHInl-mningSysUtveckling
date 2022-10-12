@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{0076F55B-AEDA-4914-9C0F-D79285D67C4E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctions", "AzureFunctions\AzureFunctions.csproj", "{2126C3DC-C066-43B3-B4FB-7F15F8862853}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{4E21E0BF-492E-4232-B59E-6680A127CFAD}"
@@ -15,12 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfShared", "WPFShared\WpfS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Device.IntelliTemp", "Device.IntelliTemp\Device.IntelliTemp.csproj", "{BFC2C340-77C3-4DB0-8E2F-0EA38FCB536D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Administration", "Client.Administration\Client.Administration.csproj", "{66AF5852-94C2-455C-9949-B440082E4847}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E98680E6-754F-4833-A04D-B6E5E3644EFD}"
-	ProjectSection(SolutionItems) = preProject
-		TODO.txt = TODO.txt
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LpSmartHub", "LpSmartHub\LpSmartHub.csproj", "{9A1D6646-497A-44FF-BD47-AB5ACACF0057}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0076F55B-AEDA-4914-9C0F-D79285D67C4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0076F55B-AEDA-4914-9C0F-D79285D67C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0076F55B-AEDA-4914-9C0F-D79285D67C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0076F55B-AEDA-4914-9C0F-D79285D67C4E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2126C3DC-C066-43B3-B4FB-7F15F8862853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2126C3DC-C066-43B3-B4FB-7F15F8862853}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2126C3DC-C066-43B3-B4FB-7F15F8862853}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,10 +41,10 @@ Global
 		{BFC2C340-77C3-4DB0-8E2F-0EA38FCB536D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFC2C340-77C3-4DB0-8E2F-0EA38FCB536D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFC2C340-77C3-4DB0-8E2F-0EA38FCB536D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66AF5852-94C2-455C-9949-B440082E4847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66AF5852-94C2-455C-9949-B440082E4847}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66AF5852-94C2-455C-9949-B440082E4847}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66AF5852-94C2-455C-9949-B440082E4847}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A1D6646-497A-44FF-BD47-AB5ACACF0057}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A1D6646-497A-44FF-BD47-AB5ACACF0057}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A1D6646-497A-44FF-BD47-AB5ACACF0057}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A1D6646-497A-44FF-BD47-AB5ACACF0057}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

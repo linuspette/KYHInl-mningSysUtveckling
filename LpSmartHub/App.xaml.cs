@@ -1,17 +1,18 @@
-﻿using Client.Administration.Helpers;
-using Client.Administration.MVVM.ViewModels;
+﻿using LpSmartHub.Helpers;
+using LpSmartHub.MVVM.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
 
-namespace Client.Administration
+namespace LpSmartHub
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
-        public static IHost? app { get; private set; }
+        public static IHost? app { get; set; }
+
         public App()
         {
             app = Host.CreateDefaultBuilder().ConfigureServices((context, services) =>
@@ -24,7 +25,7 @@ namespace Client.Administration
         protected override async void OnStartup(StartupEventArgs e)
         {
             var navigationStore = app!.Services.GetRequiredService<NavigationStore>();
-            navigationStore.CurrentViewModel = new KitchenViewModel(navigationStore);
+            navigationStore.CurrentViewModel = new LivingRoomViewModel(navigationStore);
 
             await app!.StartAsync();
             var MainWindow = app.Services.GetRequiredService<MainWindow>();

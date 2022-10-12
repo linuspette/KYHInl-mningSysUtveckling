@@ -1,10 +1,8 @@
 ﻿using Device.IntelliTemp.Helpers;
 using Microsoft.Azure.Devices.Client;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Shared.Models.Iot;
 using System;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,7 +17,6 @@ namespace Device.IntelliTemp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static IConfiguration _configuration;
         private bool timerIsOn = false;
         private readonly SolidColorBrush white = new SolidColorBrush(Colors.White);
         private readonly SolidColorBrush red = new SolidColorBrush(Colors.Red);
@@ -27,20 +24,22 @@ namespace Device.IntelliTemp
 
         public double UserSetWarningTemp { get; set; } = 30;
 
-        public MainWindow(IConfiguration configuration)
+        public MainWindow()
         {
             InitializeComponent();
 
-            _configuration = configuration;
+            DeviceManager.Initialize("intelliTemp-f1001", "Temperature Sensor", "Linus", "Kitchen");
+            DeviceManager.ConnectAsync().ConfigureAwait(false);
 
-            SendDataToIotHub().ConfigureAwait(false);
+            UpdateConnectionStateAsync().ConfigureAwait(false);
 
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += WarningOn;
-            DataGeneration().ConfigureAwait(false);
+            DataGenerationAsync().ConfigureAwait(false);
+
         }
 
-        public async Task DataGeneration()
+        public async Task DataGenerationAsync()
         {
             while (true)
             {
@@ -52,7 +51,7 @@ namespace Device.IntelliTemp
                     HumidityGenerator.GetHumidity();
                     txtBlockHumidityDisplay.Text = $"{Math.Round(HumidityGenerator.Humidity, 0)}%";
 
-                    await SendDataToIotHub();
+                    await SendDataAsync();
 
                     if (TemperatureGenerator.TemperatureC > UserSetWarningTemp && !timerIsOn)
                     {
@@ -66,9 +65,13 @@ namespace Device.IntelliTemp
                     }
                     await Task.Delay(10000);
                 }
+                else
+                {
+                    await Task.Delay(1000);
+                }
             }
         }
-        private async Task UpdateConnectionState()
+        private async Task UpdateConnectionStateAsync()
         {
             while (true)
             {
@@ -77,57 +80,27 @@ namespace Device.IntelliTemp
                 await Task.Delay(5000);
             }
         }
-        private async Task SendDataToIotHub()
+        private async Task SendDataAsync()
         {
             try
             {
-                var payload = new IntelliTempPayload
+                if (DeviceManager.isConnected)
                 {
-                    DeviceId = DeviceManager.DeviceId,
-                    Type = DeviceManager.DeviceType,
-                    Temperature = TemperatureGenerator.TemperatureC,
-                    Humidity = HumidityGenerator.Humidity,
-                };
+                    var payload = new IntelliTempPayload
+                    {
+                        DeviceId = DeviceManager.DeviceId,
+                        Type = DeviceManager.DeviceType,
+                        Temperature = TemperatureGenerator.TemperatureC,
+                        Humidity = HumidityGenerator.Humidity,
+                    };
 
-                var msg = new Message(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload)));
+                    var msg = new Message(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload)));
 
-                await DeviceManager.SendMessageToIotHubAsync(msg);
+                    await DeviceManager.SendMessageToIotHubAsync(msg);
+                }
             }
             catch { }
         }
-
-        public static async Task Initialize(IotInitialize? iotData)
-        {
-            var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\LpSmartDevices";
-            JsonSerializer serializer = new JsonSerializer();
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            if (!File.Exists(path))
-            {
-                if (iotData != null)
-                {
-                    using (StreamWriter file = File.CreateText($"{path}\\{iotData.DeviceId}.json"))
-                    {
-                        serializer.Serialize(file, iotData);
-                    }
-                }
-            }
-
-            if (File.Exists(path))
-            {
-                using (StreamReader file = new StreamReader(path))
-                {
-                    var _iotData = JsonConvert.DeserializeObject<IotInitialize>(await file.ReadToEndAsync()) ?? null!;
-                    DeviceManager.Initialize(_iotData.DeviceId, _iotData.Type, _iotData.Owner, _configuration["SysDevAzureFunctionsKey"]);
-                }
-            }
-
-        }
-
         private void WarningOn(object? sender, EventArgs e)
         {
             txtBlockTemperatureDisplay.Foreground = txtBlockTemperatureDisplay.Foreground != red ? red : white;
