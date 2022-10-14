@@ -5,7 +5,7 @@ namespace LpSmartHub.Helpers;
 
 public class NavigationStore
 {
-    public event Action? CurrenViewModelChanged;
+    public event Action? CurrentViewModelChanged;
     private BaseViewModel? _currentViewModel;
 
     public BaseViewModel CurrentViewModel
@@ -20,6 +20,6 @@ public class NavigationStore
     }
     private void OnCurrentViewModelChanged()
     {
-        CurrenViewModelChanged?.Invoke();
+        CurrentViewModelChanged?.Invoke();
     }
 }

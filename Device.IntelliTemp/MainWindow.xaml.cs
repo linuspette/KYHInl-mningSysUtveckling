@@ -73,7 +73,7 @@ namespace Device.IntelliTemp
                         timer.Stop();
                         timerIsOn = false;
                     }
-                    await Task.Delay(10000);
+                    await Task.Delay(DeviceManager._deviceSettings.Interval);
                 }
                 else
                 {
@@ -99,9 +99,10 @@ namespace Device.IntelliTemp
                     var payload = new IntelliTempPayload
                     {
                         DeviceId = DeviceManager._deviceSettings.DeviceId,
+                        Location = DeviceManager._deviceSettings.Location,
                         Type = DeviceManager._deviceSettings.DeviceType,
-                        Temperature = TemperatureGenerator.TemperatureC,
-                        Humidity = HumidityGenerator.Humidity,
+                        Temperature = $"{Math.Round((double)TemperatureGenerator.TemperatureC, 0)}°C",
+                        Humidity = $"{Math.Round((double)HumidityGenerator.Humidity, 0)}%",
                     };
 
                     var msg = new Message(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload)));

@@ -113,6 +113,7 @@ namespace Device.IntelliFan
                         var payload = new IntelliFanPayload
                         {
                             DeviceId = DeviceManager._deviceSettings.DeviceId,
+                            Location = DeviceManager._deviceSettings.Location,
                             Type = DeviceManager._deviceSettings.DeviceType,
                             IsRunning = isRunning,
                         };
@@ -123,7 +124,7 @@ namespace Device.IntelliFan
                     }
                     catch { }
                 }
-                await Task.Delay(30000);
+                await Task.Delay(DeviceManager._deviceSettings.Interval);
             }
         }
     }

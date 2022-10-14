@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:LpSmartHub.Components"
              mc:Ignorable="d" 
              x:Name="tileComponent"
-             d:DesignHeight="95" d:DesignWidth="350">
-    <Button Style="{StaticResource deviceTile}">
-        <Grid>
+             >
+    <Button Click="DeviceTile_Click" Style="{StaticResource deviceTile}">
+        <Grid Style="{StaticResource deviceTileGrid}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -17,7 +17,7 @@
             <!--Iot-Device info-->
             <StackPanel Grid.Column="0"
                         Orientation="Horizontal"
-                        HorizontalAlignment="Left">
+                        HorizontalAlignment="Right">
                 <TextBlock Style="{StaticResource tileIcon}"/>
                 <StackPanel>
                     <TextBlock Style="{StaticResource tileDeviceName}"/>
@@ -28,13 +28,21 @@
 
 
             <!--Activate/de-activate iot device-->
-            <CheckBox x:Name="deviceToggleSwitch"
-                      IsChecked="{Binding DeviceState}"
-                      Grid.Column="1"
-                      Style="{StaticResource toggleButton}"
-                      HorizontalAlignment="Right"
-                      VerticalAlignment="center"
-                      Margin="2 0 2 0"/>
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Left">
+                <CheckBox x:Name="deviceToggleSwitch"
+                          IsChecked="{Binding DeviceState}"
+                          Style="{StaticResource toggleButton}"
+                          VerticalAlignment="center"
+                          Margin="2 0 2 0"/>
+                <Button x:Name="ConfigureIotDeviceButton"
+                        Style="{StaticResource configIotDevice_Button}"
+                        Click="ConfigureIotDeviceButton_OnClick"/>
+                <Button x:Name="RemoveIotDeviceButton" 
+                        Style="{StaticResource removeIotDevice_Button}"
+                        Click="RemoveIotDeviceButton_OnClick"/>
+            </StackPanel>
         </Grid>
     </Button>
 </UserControl>

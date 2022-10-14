@@ -10,6 +10,8 @@ public interface IDeviceService
 {
     public Task<List<DeviceItem>> GetDevicesAsync(string query);
     public Task<CloudToDeviceMethodResult> SendDirectMethodAsync(DirectMethodRequest directMethodRequest);
+    public Task RemoveIotDeviceAsync(string deviceId);
+    public string GetIotHubConnectionString();
 }
 public class DeviceService : IDeviceService
 {
@@ -38,7 +40,11 @@ public class DeviceService : IDeviceService
                     catch { }
                     try { device.Location = twin.Properties.Reported["location"].ToString(); }
                     catch { }
-                    try { device.DeviceState = twin.Properties.Reported["deviceState"].ToString(); }
+
+                    try { device.Interval = twin.Properties.Reported["interval"]; }
+                    catch { device.Interval = 10000; }
+
+                    try { device.DeviceState = twin.Properties.Reported["deviceState"]; }
                     catch { }
 
                     switch (device.DeviceType.ToLower())
@@ -81,5 +87,20 @@ public class DeviceService : IDeviceService
         }
         catch { }
         return null!;
+    }
+
+    public async Task RemoveIotDeviceAsync(string deviceId)
+    {
+        try
+        {
+            using var registryManager = RegistryManager.CreateFromConnectionString(conString);
+            await registryManager.RemoveDeviceAsync(deviceId);
+        }
+        catch { }
+    }
+
+    public string GetIotHubConnectionString()
+    {
+        return conString;
     }
 }

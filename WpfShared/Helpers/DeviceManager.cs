@@ -3,7 +3,6 @@ using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
 using Shared.Models.Input.Devices;
 using Shared.Models.Iot;
-using Shared.Models.Response.Devices;
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -26,6 +25,7 @@ public static class DeviceManager
     public static DeviceSettings _deviceSettings;
     private static DeviceClient deviceClient = null!;
     private static string baseUrl = "https://sysdevfunctions.azurewebsites.net/api/devices/connect";
+    //private static string baseUrl = "http://localhost:7273/api/devices/connect";
 
     public static bool isConnected { get; set; } = false;
     public static string ConnectionStateMessage { get; set; } = null!;
@@ -66,7 +66,7 @@ public static class DeviceManager
     {
         for (int i = 0; i < 10; i++)
         {
-            if (isConnected)
+            if (!isConnected)
             {
                 SetConnectionState(i > 5 ? ConnectionState.StillConnecting : ConnectionState.Connecting);
 
@@ -78,19 +78,18 @@ public static class DeviceManager
                             await _httpClient.PostAsJsonAsync(baseUrl, new HttpDeviceRequest { DeviceId = _deviceSettings.DeviceId });
                         if (response.IsSuccessStatusCode)
                         {
-                            var data = JsonConvert.DeserializeObject<HttpDeviceResponse>(
-                                await response.Content.ReadAsStringAsync());
+                            var data = await response.Content.ReadAsStringAsync();
                             if (data != null)
                             {
                                 try
                                 {
-                                    deviceClient = DeviceClient.CreateFromConnectionString(data.ConnectionString, TransportType.Mqtt);
+                                    deviceClient = DeviceClient.CreateFromConnectionString(data, TransportType.Mqtt);
                                     SetConnectionState(ConnectionState.Initializing);
                                     var twin = await deviceClient.GetTwinAsync();
 
                                     try
                                     {
-                                        _deviceSettings.Interval = (int)twin.Properties.Desired["interval"];
+                                        _deviceSettings.Interval = (int)twin.Properties.Reported["interval"];
                                     }
                                     catch { }
 
@@ -137,7 +136,31 @@ public static class DeviceManager
         while (deviceClient == null)
         {
             if (deviceClient != null)
+            {
                 await deviceClient.SetMethodHandlerAsync("OnOff", OnOff, null);
+                await deviceClient.SetMethodHandlerAsync("ChangeInterval", ChangeInterval, null);
+            }
+        }
+    }
+
+    private static Task<MethodResponse> ChangeInterval(MethodRequest methodrequest, object usercontext)
+    {
+        try
+        {
+            string id = _deviceSettings.DeviceId;
+
+            var data = JsonConvert.DeserializeObject<dynamic>(methodrequest.DataAsJson);
+
+            _deviceSettings.Interval = (int)data!.interval;
+
+
+            SetDeviceTwinAsync().ConfigureAwait(false);
+            return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(_deviceSettings)), 200));
+
+        }
+        catch (Exception e)
+        {
+            return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(e)), 400));
         }
     }
 
@@ -161,11 +184,13 @@ public static class DeviceManager
     private static async Task SetDeviceTwinAsync()
     {
         var twinCollection = new TwinCollection();
+
         twinCollection["location"] = _deviceSettings.Location;
         twinCollection["owner"] = _deviceSettings.Owner;
         twinCollection["deviceType"] = _deviceSettings.DeviceType;
         twinCollection["deviceState"] = _deviceSettings.DeviceState;
         twinCollection["deviceName"] = _deviceSettings.DeviceName;
+        twinCollection["interval"] = _deviceSettings.Interval;
 
         await deviceClient.UpdateReportedPropertiesAsync(twinCollection);
     }

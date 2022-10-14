@@ -5,7 +5,7 @@ public class IntelliTempPayload
     public string DeviceId { get; set; } = null!;
     public string Location { get; set; } = null!;
     public string Type { get; set; } = null!;
-    public double Temperature { get; set; }
-    public double Humidity { get; set; }
+    public string Temperature { get; set; } = null!;
+    public string Humidity { get; set; } = null!;
     public DateTime LocalTimestamp { get; set; } = DateTime.Now.ToLocalTime();
 }

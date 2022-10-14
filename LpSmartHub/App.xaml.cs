@@ -27,7 +27,7 @@ namespace LpSmartHub
         protected override async void OnStartup(StartupEventArgs e)
         {
             var navigationStore = app!.Services.GetRequiredService<NavigationStore>();
-            var deviceService = app!.Services.GetRequiredService<DeviceService>();
+            var deviceService = app!.Services.GetRequiredService<IDeviceService>();
 
             navigationStore.CurrentViewModel = new LivingRoomViewModel(navigationStore, deviceService);
 

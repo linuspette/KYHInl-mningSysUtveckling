@@ -7,8 +7,9 @@ namespace LpSmartHub.MVVM.ViewModels;
 public class BaseViewModel : Timers, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+
+    protected void OnPropertyChanged([CallerMemberName] string name = null!)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

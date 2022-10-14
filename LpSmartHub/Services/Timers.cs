@@ -7,13 +7,13 @@ public abstract class Timers
 {
     public Timers()
     {
-
+        InitializeTimers();
     }
 
     protected virtual void InitializeTimers()
     {
         DispatcherTimer ClockTimer = new DispatcherTimer();
-        ClockTimer.Interval = TimeSpan.FromSeconds(1);
+        ClockTimer.Interval = TimeSpan.FromSeconds(7);
         ClockTimer.Tick += ClockTimer_Tick;
         ClockTimer.Start();
     }

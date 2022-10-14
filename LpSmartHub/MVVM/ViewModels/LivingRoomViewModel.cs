@@ -25,7 +25,6 @@ public class LivingRoomViewModel : BaseViewModel
         NavigateToSettings =
             new NavigateCommand<LivingRoomViewModel>(navigationStore, () => new LivingRoomViewModel(_navigationStore, _deviceService));
 
-        SetClock();
         GetDeviceItemsAsync().ConfigureAwait(false);
     }
 
@@ -33,7 +32,7 @@ public class LivingRoomViewModel : BaseViewModel
 
     public ObservableCollection<DeviceItem> DeviceItems
     {
-        get => _deviceItems ?? null!;
+        get => _deviceItems;
         set
         {
             _deviceItems = value;
@@ -64,17 +63,8 @@ public class LivingRoomViewModel : BaseViewModel
         }
     }
 
-
-
-    private void SetClock()
-    {
-        CurrentDate = DateTime.Now.ToString("dd MMMM yyyy");
-        CurrentTime = DateTime.Now.ToString("HH:MM:ss");
-    }
-
     protected override async void ClockTimer_Tick(object? sender, EventArgs e)
     {
-        SetClock();
         await GetDeviceItemsAsync();
         base.ClockTimer_Tick(sender, e);
     }

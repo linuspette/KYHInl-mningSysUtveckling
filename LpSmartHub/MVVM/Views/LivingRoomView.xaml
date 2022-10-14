@@ -24,7 +24,7 @@
             <StackPanel Grid.Row="1">
                 <!--Room Title-->
                 <TextBlock x:Name="tb_Title" 
-                           Text="Title"
+                           Text="Living Room"
                            HorizontalAlignment="Center"
                            Style="{StaticResource Text-Primary}"
                            FontSize="36"/>
@@ -67,7 +67,8 @@
             </StackPanel>
 
             <!--Iot-Devices-->
-            <ItemsControl x:Name="device_Tiles" 
+            <ItemsControl x:Name="device_Tiles"
+                          ItemsSource="{Binding DeviceItems}"
                           Grid.Row="2" 
                           Background="Transparent" 
                           BorderThickness="0" 
@@ -75,9 +76,18 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <components:TileComponent
-                            />
+                            IsChecked="{Binding DeviceState}"
+                            DeviceName="{Binding DeviceName}"
+                            DeviceType="{Binding DeviceType}"
+                            IconActive="{Binding IconActive}"
+                            IconInActive="{Binding IconInActive}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel MaxWidth="{Binding ActualWidth, ElementName=device_Tiles}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
             </ItemsControl>
 
             <!--Close Button-->
